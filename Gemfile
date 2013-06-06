@@ -8,5 +8,6 @@ gem "xmpp4r-simple-19"
 
 group :development do
   gem "cucumber"
+  gem "debugger"
   gem "rspec"
 end
