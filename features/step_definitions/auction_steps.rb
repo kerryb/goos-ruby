@@ -3,5 +3,5 @@ Given "an auction of an item is in progress" do
 end
 
 When "the auction closes" do
-  pending
+  auction.close
 end

@@ -4,4 +4,7 @@ class FakeAuctionServer
 
   def start_selling_item
   end
+
+  def close
+  end
 end
