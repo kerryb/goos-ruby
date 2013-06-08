@@ -1,5 +1,6 @@
 module DrivesApplication
-  def start_bidding_in auction
+  def sniper
+    @sniper ||= ApplicationDriver.new
   end
 end
 World DrivesApplication
