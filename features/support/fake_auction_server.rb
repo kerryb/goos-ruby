@@ -12,7 +12,7 @@ class FakeAuctionServer
     client.register_handler :message do |m|
       @message = m
     end
-    run
+    connect
   end
 
   def wait_for_join_request_from_sniper
@@ -40,10 +40,10 @@ class FakeAuctionServer
     @message
   end
 
-  def run
+  def connect
     Thread.new do
       EM.run do
-        client.run
+        client.connect
       end
     end
   end

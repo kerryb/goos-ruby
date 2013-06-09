@@ -8,17 +8,26 @@ class Sniper
     @item_id = item_id
 
     @client = Blather::Client.setup id, passsword
-    run
+    client.register_handler :ready do
+      EM.next_tick do
+        client.write Blather::Stanza::Message.new(auction_id, "")
+      end
+    end
+    connect
   end
 
   private
 
-  attr_reader :client
+  attr_reader :client, :item_id
 
-  def run
+  def auction_id
+    "auction-#{item_id}@localhost"
+  end
+
+  def connect
     Thread.new do
       EM.run do
-        client.run
+        client.connect
       end
     end
   end
