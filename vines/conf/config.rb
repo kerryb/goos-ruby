@@ -13,7 +13,7 @@ Vines::Config.configure do
   # TLS encryption is mandatory so each host must have a <domain>.crt and
   # <domain>.key file in the conf/certs directory. A self-signed certificate can
   # be generated for a virtual host domain with the 'vines cert <domain.tld>'
-  # command. Change the example, 'xmpp_server', domain name to your actual
+  # command. Change the example, 'localhost', domain name to your actual
   # domain.
   #
   # The private_storage attribute allows clients to store XML fragments
@@ -21,11 +21,11 @@ Vines::Config.configure do
   #
   # The pubsub attribute defines the XEP-0060 Publish-Subscribe services hosted
   # at these virtual host domains. In the example below, pubsub services are
-  # available at games.xmpp_server and scores.xmpp_server as well as
+  # available at games.localhost and scores.localhost as well as
   # games.verona.lit and scores.verona.lit.
   #
   # Shared storage example:
-  # host 'verona.lit', 'xmpp_server' do
+  # host 'verona.lit', 'localhost' do
   #   private_storage false
   #   cross_domain_messages false
   #   storage 'fs' do
@@ -36,7 +36,7 @@ Vines::Config.configure do
   #   pubsub 'games', 'scores'
   # end
 
-  host 'xmpp_server' do
+  host 'localhost' do
     cross_domain_messages false
     private_storage false
     storage 'fs' do
@@ -52,13 +52,13 @@ Vines::Config.configure do
   # saved or validated against the storage database. However, all other user
   # information, like rosters, is still saved in the storage database.
   #
-  # host 'xmpp_server' do
+  # host 'localhost' do
   #   cross_domain_messages false
   #   private_storage false
   #   storage 'fs' do
   #     dir 'data'
   #   end
-  #   ldap 'ldap.xmpp_server', 636 do
+  #   ldap 'ldap.localhost', 636 do
   #     dn 'cn=Directory Manager'
   #     password 'secr3t'
   #     basedn 'dc=wonderland,dc=lit'
@@ -119,7 +119,7 @@ Vines::Config.configure do
   # Configure the redis connection used to form a cluster of server instances,
   # serving the same chat domains across many different machines.
   #cluster do
-  #  host 'redis.xmpp_server'
+  #  host 'redis.localhost'
   #  port 6379
   #  database 0
   #  password ''

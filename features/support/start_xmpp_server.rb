@@ -1,5 +1,5 @@
-system "cd xmpp_server; vines start -d"
+system "cd vines; vines start -d"
 
 at_exit do
-  system "cd xmpp_server; vines stop"
+  system "cd vines; vines stop"
 end
