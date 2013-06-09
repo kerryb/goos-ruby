@@ -14,7 +14,7 @@ class Sniper
 
   private
 
-  attr_reader :client, :item_id, :ui_root
+  attr_reader :client, :item_id
 
   def auction_id
     "auction-#{item_id}@localhost"
@@ -41,7 +41,9 @@ class Sniper
   end
 
   def setup_ui
-    @ui_root = TkRoot.new
+    ui_root = TkRoot.new
     label = TkLabel.new(ui_root)
+    label.text = status
+    label.pack
   end
 end
