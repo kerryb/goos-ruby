@@ -8,14 +8,10 @@ class ApplicationDriver
     @sniper = Sniper.new SNIPER_ID, SNIPER_PASSWORD, auction.item_id
   end
 
-  def wait_for_status_to_be status
-    Timeout.timeout 2 do
-      sleep 0.1 until sniper.status == status
-    end
-  end
-
   def has_lost_auction?
-    wait_for_status_to_be "Lost"
+    Timeout.timeout 2 do
+      sleep 0.1 until sniper.status == "Lost"
+    end
   end
 
   private
