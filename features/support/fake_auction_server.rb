@@ -22,6 +22,9 @@ class FakeAuctionServer
   end
 
   def close
+    EM.next_tick do
+      client.write Blather::Stanza::Message.new(sniper_id, "")
+    end
   end
 
   private
@@ -34,6 +37,10 @@ class FakeAuctionServer
 
   def auction_login
     "auction-#{item_id}@localhost"
+  end
+
+  def sniper_id
+    "sniper@localhost"
   end
 
   def has_received_message?

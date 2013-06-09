@@ -11,6 +11,7 @@ class ApplicationDriver
   def has_lost_auction?
     Timeout.timeout 2 do
       sleep 0.1 until sniper.status == "Lost"
+      return true
     end
   end
 

@@ -8,11 +8,17 @@ class Sniper
     @item_id = item_id
 
     @client = Blather::Client.setup id, passsword
+
     client.register_handler :ready do
       EM.next_tick do
         client.write Blather::Stanza::Message.new(auction_id, "")
       end
     end
+
+    client.register_handler :message do |m|
+      @status = "Lost"
+    end
+
     connect
   end
 
