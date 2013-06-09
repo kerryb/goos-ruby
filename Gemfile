@@ -1,10 +1,8 @@
 source "https://rubygems.org"
 
-gem "rack"
+gem "blather"
 gem "rake"
-gem "sinatra"
 gem "vines"
-gem "xmpp4r-simple-19"
 
 group :development do
   gem "cucumber"
