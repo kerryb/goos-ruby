@@ -5,9 +5,5 @@ module RunsFakeAuction
     @auction = FakeAuctionServer.new(id)
     auction.start_selling_item
   end
-
-  def close
-    auction.close
-  end
 end
 World RunsFakeAuction
