@@ -8,6 +8,6 @@ task :default => :features
 Cucumber::Rake::Task.new :features
 
 task :run do
-  app = Sniper.new "sniper@localhost", "sniper", ""
-  Tk.mainloop
+  Sniper.new "sniper@localhost", "sniper", ""
+  loop { sleep 1000 }
 end

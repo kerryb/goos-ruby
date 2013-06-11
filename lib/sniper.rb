@@ -1,20 +1,26 @@
 require "blather/client/client"
 require "tk"
+require "drb"
 
 class Sniper
-  attr_reader :status
-
   def initialize id, passsword, item_id
-    @status = "Joining"
     @item_id = item_id
-
-    start_xmpp_client id, passsword
     setup_ui
+    update_status "Joining"
+    start_xmpp_client id, passsword
+    start_ui
+  end
+
+  def self.drb_connection
+    DRb.start_service
+    DRbObject.new_with_uri DRB_URI
   end
 
   private
 
-  attr_reader :client, :item_id
+  DRB_URI = "druby://localhost:8787"
+
+  attr_reader :client, :item_id, :ui_root, :status
 
   def auction_id
     "auction-#{item_id}@localhost"
@@ -30,20 +36,34 @@ class Sniper
     end
 
     client.register_handler :message do |m|
-      @status = "Lost"
+      update_status "Lost"
     end
 
-    Thread.new do
-      EM.run do
-        client.connect
-      end
-    end
+    Thread.new { EM.run { client.connect } }
   end
 
   def setup_ui
-    ui_root = TkRoot.new
-    label = TkLabel.new(ui_root)
-    label.text = status
-    label.pack
+    @ui_root = TkRoot.new { title "Auction sniper" }
+    status = @status = TkVariable.new # @status is out of scope in block below
+    status_label = TkLabel.new(ui_root) do
+      width 20
+      textvariable status
+      pack
+    end
+    enable_remote_test_access
+  end
+
+  # Blocks main thread
+  def start_ui
+    Tk.mainloop
+  end
+
+  def enable_remote_test_access
+    DRb.start_service DRB_URI, Tk.root
+  end
+
+  def update_status value
+    status.value = value
+    ui_root.update
   end
 end
