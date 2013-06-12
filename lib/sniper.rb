@@ -1,24 +1,40 @@
 require "blather/client/client"
-require "tk"
+require "gtk2"
 require "drb"
 
 class Sniper
   def initialize id, passsword, item_id
     @item_id = item_id
-    setup_ui
-    update_status "Joining"
     start_xmpp_client id, passsword
     start_ui
   end
 
   def self.drb_connection
-    DRb.start_service
     DRbObject.new_with_uri DRB_URI
   end
 
   private
 
   DRB_URI = "druby://localhost:8787"
+
+  class SniperWindow < Gtk::Window
+    def initialize
+      super
+
+      set_title  "Auction sniper"
+      signal_connect "destroy" do
+        Gtk.main_quit
+      end
+
+      init_ui
+      show_all
+    end
+
+    def init_ui
+      fixed = Gtk::Fixed.new
+    end
+  end
+
 
   attr_reader :client, :item_id, :ui_root, :status
 
@@ -42,24 +58,16 @@ class Sniper
     Thread.new { EM.run { client.connect } }
   end
 
-  def setup_ui
-    @ui_root = TkRoot.new { title "Auction sniper" }
-    status = @status = TkVariable.new # @status is out of scope in block below
-    status_label = TkLabel.new(ui_root) do
-      width 20
-      textvariable status
-      pack
-    end
-    enable_remote_test_access
-  end
-
   # Blocks main thread
   def start_ui
-    Tk.mainloop
+    window = SniperWindow.new
+    enable_remote_test_access window
+    Gtk.init
+    Gtk.main
   end
 
-  def enable_remote_test_access
-    DRb.start_service DRB_URI, Tk.root
+  def enable_remote_test_access window
+    DRb.start_service DRB_URI, window
   end
 
   def update_status value

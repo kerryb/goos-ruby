@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "blather"
+gem "gtk2"
 gem "rake"
 gem "vines"
 

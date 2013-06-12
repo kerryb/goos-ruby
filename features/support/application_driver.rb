@@ -22,12 +22,16 @@ class ApplicationDriver
   end
 
   def wait_for_status status
-    Timeout.timeout 20 do
-      sleep 0.1 until Tk.root.winfo_children.any? {|e| e.text == status }
+    Timeout.timeout 2 do
+      sleep 0.1 until all_widgets_of_type(Gtk::Label).any? {|e| e.text == status }
       return true
     end
   rescue Timeout::Error => e
-    labels = Tk.root.winfo_children.map(&:text)
+    labels = all_widgets_of_type(Gtk::Label).map(&:text)
     fail %{Looking for label with text "#{status}", but only found #{labels.inspect}}
+  end
+
+  def all_widgets_of_type type
+    []
   end
 end
