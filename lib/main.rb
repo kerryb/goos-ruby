@@ -2,15 +2,22 @@ require "blather/client/client"
 require "gtk2"
 require "drb"
 
-class Sniper
-  def initialize id, passsword, item_id
+class Main
+  def initialize item_id
     @item_id = item_id
-    start_xmpp_client id, passsword
-    start_ui
+  end
+
+  def self.main id, passsword, item_id
+    new(item_id).start id, passsword
   end
 
   def self.drb_connection
     DRbObject.new_with_uri DRB_URI
+  end
+
+  def start id, passsword
+    start_xmpp_client id, passsword
+    start_ui
   end
 
   private

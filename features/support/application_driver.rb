@@ -1,4 +1,4 @@
-require "sniper"
+require "main"
 
 class ApplicationDriver
   SNIPER_ID = "sniper@localhost"
@@ -6,7 +6,7 @@ class ApplicationDriver
 
   def start_bidding_in auction
     Thread.new do
-      Sniper.new SNIPER_ID, SNIPER_PASSWORD, auction.item_id
+      Main.main SNIPER_ID, SNIPER_PASSWORD, auction.item_id
     end
     wait_for_app_to_start
     wait_for_status "Joining"
@@ -23,7 +23,7 @@ class ApplicationDriver
       loop do
         begin
           sleep 0.1
-          return if Sniper.drb_connection.respond_to? :title
+          return if Main.drb_connection.respond_to? :title
         rescue Errno::ECONNREFUSED, DRb::DRbConnError, DRb::DRbServerNotFound
         end
       end
@@ -31,7 +31,7 @@ class ApplicationDriver
   end
 
   def app
-    @app ||= Sniper.drb_connection
+    @app ||= Main.drb_connection
   end
 
   def wait_for_status status
