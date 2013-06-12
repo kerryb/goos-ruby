@@ -2,6 +2,8 @@ require "blather/client/client"
 require "gtk2"
 require "drb"
 
+require "ui/main_window"
+
 class Main
   def initialize item_id
     @item_id = item_id
@@ -23,30 +25,6 @@ class Main
   private
 
   DRB_URI = "druby://localhost:8787"
-
-  class SniperWindow < Gtk::Window
-    attr_reader :status_label
-
-    def initialize
-      super
-
-      set_title  "Auction sniper"
-      signal_connect "destroy" do
-        Gtk.main_quit
-      end
-
-      @status_label = Gtk::Label.new "Joining"
-      add status_label
-
-      init_ui
-      show_all
-    end
-
-    def init_ui
-      fixed = Gtk::Fixed.new
-    end
-  end
-
 
   attr_reader :client, :item_id, :window, :status_label
 
@@ -72,7 +50,7 @@ class Main
 
   # Blocks main thread
   def start_ui
-    @window = SniperWindow.new
+    @window = Ui::MainWindow.new
     enable_remote_test_access window
     Gtk.init
     Gtk.main
