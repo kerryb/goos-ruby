@@ -5,9 +5,10 @@ class ApplicationDriver
   SNIPER_PASSWORD = "sniper"
 
   def start_bidding_in auction
-    fork do
+    Thread.new do
       Sniper.new SNIPER_ID, SNIPER_PASSWORD, auction.item_id
     end
+    wait_for_app_to_start
     wait_for_status "Joining"
   end
 
@@ -16,6 +17,18 @@ class ApplicationDriver
   end
 
   private
+
+  def wait_for_app_to_start
+    Timeout.timeout 10 do
+      loop do
+        begin
+          sleep 0.1
+          return if Sniper.drb_connection.respond_to? :title
+        rescue Errno::ECONNREFUSED, DRb::DRbConnError, DRb::DRbServerNotFound
+        end
+      end
+    end
+  end
 
   def app
     @app ||= Sniper.drb_connection
@@ -32,6 +45,11 @@ class ApplicationDriver
   end
 
   def all_widgets_of_type type
-    []
+    widget_and_children(app).flatten.select {|w| w.is_a? type }
+  end
+
+  def widget_and_children widget
+    return [widget] unless widget.respond_to? :children
+    [widget] + widget.children.map {|w| widget_and_children w }
   end
 end

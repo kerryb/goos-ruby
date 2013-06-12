@@ -18,6 +18,8 @@ class Sniper
   DRB_URI = "druby://localhost:8787"
 
   class SniperWindow < Gtk::Window
+    attr_reader :status_label
+
     def initialize
       super
 
@@ -25,6 +27,9 @@ class Sniper
       signal_connect "destroy" do
         Gtk.main_quit
       end
+
+      @status_label = Gtk::Label.new "Joining"
+      add status_label
 
       init_ui
       show_all
@@ -36,7 +41,7 @@ class Sniper
   end
 
 
-  attr_reader :client, :item_id, :ui_root, :status
+  attr_reader :client, :item_id, :window, :status_label
 
   def auction_id
     "auction-#{item_id}@localhost"
@@ -52,7 +57,7 @@ class Sniper
     end
 
     client.register_handler :message do |m|
-      update_status "Lost"
+      window.status_label.text = "Lost"
     end
 
     Thread.new { EM.run { client.connect } }
@@ -60,7 +65,7 @@ class Sniper
 
   # Blocks main thread
   def start_ui
-    window = SniperWindow.new
+    @window = SniperWindow.new
     enable_remote_test_access window
     Gtk.init
     Gtk.main
@@ -68,10 +73,5 @@ class Sniper
 
   def enable_remote_test_access window
     DRb.start_service DRB_URI, window
-  end
-
-  def update_status value
-    status.value = value
-    ui_root.update
   end
 end
