@@ -26,7 +26,7 @@ class Main
 
   DRB_URI = "druby://localhost:8787"
 
-  attr_reader :client, :item_id, :window, :status_label
+  attr_reader :client, :item_id, :window
 
   def auction_id
     "auction-#{item_id}@localhost"
