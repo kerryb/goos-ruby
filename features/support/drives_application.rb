@@ -1,6 +1,6 @@
 module DrivesApplication
   def sniper
-    @sniper ||= ApplicationDriver.new
+    @sniper ||= ApplicationRunner.new
   end
 end
 World DrivesApplication

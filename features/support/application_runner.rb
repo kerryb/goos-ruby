@@ -1,6 +1,6 @@
 require "main"
 
-class ApplicationDriver
+class ApplicationRunner
   SNIPER_ID = "sniper@localhost"
   SNIPER_PASSWORD = "sniper"
 
