@@ -12,6 +12,10 @@ class ApplicationRunner
     wait_for_status "Joining"
   end
 
+  def stop
+    app.stop
+  end
+
   def has_lost_auction?
     wait_for_status "Lost"
   end

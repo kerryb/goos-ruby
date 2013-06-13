@@ -20,5 +20,9 @@ module Ui
     def init_ui
       fixed = Gtk::Fixed.new
     end
+
+    def stop
+      Gtk.main_quit
+    end
   end
 end

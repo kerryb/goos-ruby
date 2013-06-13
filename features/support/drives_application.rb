@@ -4,3 +4,7 @@ module DrivesApplication
   end
 end
 World DrivesApplication
+
+After do
+  sniper.stop if sniper
+end
