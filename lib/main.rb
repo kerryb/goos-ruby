@@ -5,6 +5,11 @@ require "drb"
 require "ui/main_window"
 
 class Main
+  JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;"
+  PRICE_EVENT_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;"
+  BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;"
+  CLOSE_EVENT_FORMAT = "SOLVersion: 1.1; Event: CLOSE;"
+
   def initialize item_id
     @item_id = item_id
   end
@@ -37,7 +42,7 @@ class Main
 
     client.register_handler :ready do
       EM.next_tick do
-        client.write Blather::Stanza::Message.new(auction_id, "")
+        client.write Blather::Stanza::Message.new(auction_id, JOIN_COMMAND_FORMAT)
       end
     end
 

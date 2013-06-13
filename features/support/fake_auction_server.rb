@@ -15,9 +15,15 @@ class FakeAuctionServer
     connect
   end
 
-  def wait_for_join_request_from_sniper
+  def wait_for_join_request_from_sniper sniper_id
     Timeout.timeout 5 do
-      sleep 0.1 until has_received_message?
+      sleep 0.1 until has_received_message?(Main::JOIN_COMMAND_FORMAT, sniper_id)
+    end
+  end
+
+  def wait_for_sniper_to_bid amount, sniper_id
+    Timeout.timeout 5 do
+      sleep 0.1 until has_received_message?(Main::BID_COMMAND_FORMAT % amount, sniper_id)
     end
   end
 
@@ -29,7 +35,7 @@ class FakeAuctionServer
 
   private
 
-  attr_reader :client
+  attr_reader :client, :message
 
   def auction_password
     "auction"
@@ -43,8 +49,8 @@ class FakeAuctionServer
     "sniper@localhost"
   end
 
-  def has_received_message?
-    @message
+  def has_received_message? text, sender
+    message && message.body == text && message.from.stripped == sender
   end
 
   def connect
