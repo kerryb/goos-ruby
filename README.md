@@ -8,19 +8,22 @@ end of each chapter (currently I've only done chapters 10 and 11).
 
 ### XMPP
 
-I'm using the [Vines](http://www.getvines.org/) XMPP server (installed as a gem and
-started and stopped automatically by the tests).
+The [Vines](http://www.getvines.org/) XMPP server is started and stopped
+automatically by the tests.
 
-For the client I'm using [Blather](https://github.com/adhearsion/blather),
-which runs in [EventMachine](http://rubyeventmachine.com/) so has to be started
-in its own thread to avoid blocking the rest of the application.
+For the client I tried [xmpp4r](http://home.gna.org/xmpp4r/) and
+[xmp4r-simple](https://github.com/blaine/xmpp4r-simple), but couldn't get
+either of them to work properly, so ended up with
+[Blather](https://github.com/adhearsion/blather).  This runs in
+[EventMachine](http://rubyeventmachine.com/) so has to be started in its own
+thread to avoid blocking the rest of the application.
 
 ### GUI
 
 I considered using Swing to keep close to the book, but that would have
 restricted the app to only running on JRuby. I tried Tk and Qt, but couldn't
-figure out any particularly easy way of testing them, and they didn't seem to
-take particularly well to being run in separate threads.
+figure out any easy way of testing them, and they didn't seem to take
+particularly well to being run in separate threads.
 
 In the end, I settled on [GTK+](http://www.gtk.org/). The default Mac version
 runs in X Windows and is fairly ugly, but it exposes all its widgets cleanly so
