@@ -1,6 +1,7 @@
 require "blather/client/client"
 require "gtk2"
 
+require "auction_message_translator"
 require "ui/main_window"
 
 class Main
@@ -29,6 +30,10 @@ class Main
     stop_ui
   end
 
+  def auction_closed
+    main_window.status_label.text = "Lost"
+  end
+
   private
 
   attr_reader :client, :item_id
@@ -39,18 +44,15 @@ class Main
 
   def start_xmpp_client id, passsword
     @client = Blather::Client.setup id, passsword
-
-    client.register_handler :ready do
-      EM.next_tick do
-        client.write Blather::Stanza::Message.new(auction_id, JOIN_COMMAND_FORMAT)
-      end
-    end
-
-    client.register_handler :message do |m|
-      main_window.status_label.text = "Lost"
-    end
-
+    client.register_handler(:ready) { join_auction }
+    client.register_handler :message, &AuctionMessageTranslator.for(self)
     client.connect
+  end
+
+  def join_auction
+    EM.next_tick do
+      client.write Blather::Stanza::Message.new(auction_id, JOIN_COMMAND_FORMAT)
+    end
   end
 
   def stop_xmpp_client
