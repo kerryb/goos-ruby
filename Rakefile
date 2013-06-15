@@ -4,7 +4,7 @@ require "cucumber"
 require "cucumber/rake/task"
 require 'rspec/core/rake_task'
 
-task :default => [:spec, :"cucumber:ok", :"cucumber:wip", :success]
+task :default => [:spec, :"xmpp_server:start", :"cucumber:ok", :"cucumber:wip", :"xmpp_server:stop", :success]
 
 RSpec::Core::RakeTask.new :spec
 
@@ -29,7 +29,21 @@ task :success do
   puts "", "#{bold}#{red}*#{yellow}*#{green}*#{blue}*#{purple}* #{green} ALL TESTS PASSED #{purple}*#{blue}*#{green}*#{yellow}*#{red}*#{normal}"
 end
 
-task :run do
+namespace :xmpp_server do
+  task :start do
+    system "cd vines; vines start -d"
+  end
+
+  task :stop do
+    system "cd vines; vines stop"
+  end
+end
+
+task :run => :"xmpp_server:start" do
   Main.main "sniper@localhost", "sniper", ""
-  loop { sleep 1000 }
+  begin
+    loop { sleep 1000 }
+  rescue Interrupt
+    Rake::Task[:"xmpp_server:stop"].execute
+  end
 end

@@ -44,6 +44,7 @@ class Main
   end
 
   def start_xmpp_client id, passsword
+    Thread.new { EM.run } unless EM.reactor_running?
     @client = Blather::Client.setup id, passsword
     client.register_handler(:ready) { join_auction }
     client.register_handler :message, &AuctionMessageTranslator.for(self)

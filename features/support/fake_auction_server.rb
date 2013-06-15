@@ -11,6 +11,7 @@ class FakeAuctionServer
   end
 
   def start_selling_item
+    Thread.new { EM.run } unless EM.reactor_running?
     @client = Blather::Client.setup auction_login, auction_password
     client.register_handler :message do |m|
       @message = m
