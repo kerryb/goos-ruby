@@ -34,6 +34,6 @@ I can poke them and assert things about them from the end-to-end tests.
 I'm using [Cucumber](http://cukes.info/) for end-to-end/acceptance tests, and
 [RSpec](http://rspec.info/) for unit tests.
 
-To test the UI, I have it start up a
-[DRb](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/drb/rdoc/DRb.html) server
-exposing the main window, and connect to that from the tests.
+To test the UI, I'm just calling methods directly on the main Gtk::Window
+object (which still runs as normal and can be seen on the screen as the tests
+run).

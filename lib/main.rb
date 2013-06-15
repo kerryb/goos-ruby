@@ -1,6 +1,5 @@
 require "blather/client/client"
 require "gtk2"
-require "drb"
 
 require "ui/main_window"
 
@@ -10,16 +9,14 @@ class Main
   BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;"
   CLOSE_EVENT_FORMAT = "SOLVersion: 1.1; Event: CLOSE;"
 
+  attr_reader :main_window
+
   def initialize item_id
     @item_id = item_id
   end
 
   def self.main id, passsword, item_id
     new(item_id).tap {|m| m.start id, passsword }
-  end
-
-  def self.drb_connection
-    DRbObject.new_with_uri DRB_URI
   end
 
   def start id, passsword
@@ -30,14 +27,11 @@ class Main
   def stop
     stop_xmpp_client
     stop_ui
-    stop_remote_test_access
   end
 
   private
 
-  DRB_URI = "druby://localhost:8787"
-
-  attr_reader :client, :item_id, :window
+  attr_reader :client, :item_id
 
   def auction_id
     "auction-#{item_id}@localhost"
@@ -53,7 +47,7 @@ class Main
     end
 
     client.register_handler :message do |m|
-      window.status_label.text = "Lost"
+      main_window.status_label.text = "Lost"
     end
 
     client.connect
@@ -65,21 +59,12 @@ class Main
 
   # Blocks main thread
   def start_ui
-    @window = Ui::MainWindow.new
-    enable_remote_test_access window
+    @main_window = Ui::MainWindow.new
     Gtk.init
     Thread.new { Gtk.main }
   end
 
   def stop_ui
-    window.destroy
-  end
-
-  def enable_remote_test_access window
-    DRb.start_service DRB_URI, window
-  end
-
-  def stop_remote_test_access
-    DRb.stop_service
+    main_window.destroy
   end
 end

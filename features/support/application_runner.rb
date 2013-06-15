@@ -22,20 +22,14 @@ class ApplicationRunner
 
   attr_reader :application
 
-  def wait_for_app_to_start
-    Timeout.timeout 10 do
-      loop do
-        begin
-          sleep 0.1
-          return if Main.drb_connection.respond_to? :title
-        rescue Errno::ECONNREFUSED, DRb::DRbConnError, DRb::DRbServerNotFound
-        end
-      end
-    end
+  def window
+    application.main_window
   end
 
-  def app
-    @app ||= Main.drb_connection
+  def wait_for_app_to_start
+    Timeout.timeout 10 do
+      sleep 0.1 until application.main_window.title == "Auction sniper"
+    end
   end
 
   def wait_for_status status
@@ -49,7 +43,7 @@ class ApplicationRunner
   end
 
   def all_widgets_of_type type
-    widget_and_children(app).flatten.select {|w| w.is_a? type }
+    widget_and_children(window).flatten.select {|w| w.is_a? type }
   end
 
   def widget_and_children widget
