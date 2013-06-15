@@ -8,6 +8,7 @@ Feature: End-to-end test
     And the auction closes
     Then I should have lost the auction
 
+  @wip
   Scenario: Place a bid, but still lose
     Given an auction of an item is in progress
     When I start bidding in the auction
