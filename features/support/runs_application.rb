@@ -1,8 +1,8 @@
-module DrivesApplication
+module RunsApplication
   def sniper
     @sniper ||= ApplicationRunner.new
   end
 end
-World DrivesApplication
+World RunsApplication
 
 After { sniper.stop if @sniper }
