@@ -6,9 +6,7 @@ require "ui/main_window"
 
 class Main
   JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;"
-  PRICE_EVENT_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;"
   BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;"
-  CLOSE_EVENT_FORMAT = "SOLVersion: 1.1; Event: CLOSE;"
 
   attr_reader :main_window
 

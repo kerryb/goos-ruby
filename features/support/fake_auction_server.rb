@@ -1,6 +1,9 @@
 require "blather/client/client"
 
 class FakeAuctionServer
+  PRICE_EVENT_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;"
+  CLOSE_EVENT_FORMAT = "SOLVersion: 1.1; Event: CLOSE;"
+
   attr_reader :item_id
 
   def initialize item_id
@@ -16,11 +19,11 @@ class FakeAuctionServer
   end
 
   def report_price price, increment, current_high_bidder
-    send_message Main::PRICE_EVENT_FORMAT % [price, increment, current_high_bidder]
+    send_message PRICE_EVENT_FORMAT % [price, increment, current_high_bidder]
   end
 
   def close
-    send_message Main::CLOSE_EVENT_FORMAT
+    send_message CLOSE_EVENT_FORMAT
   end
 
   def wait_for_join_request_from_sniper sniper_id
