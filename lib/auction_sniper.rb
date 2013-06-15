@@ -4,7 +4,7 @@ class AuctionSniper
   end
 
   def current_price price, increment
-    # TODO
+    sniper_listener.sniper_bidding
   end
 
   def auction_closed

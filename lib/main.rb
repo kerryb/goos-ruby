@@ -32,6 +32,10 @@ class Main
   def current_price price, increment
   end
 
+  def sniper_bidding
+    main_window.status_label.text = "Bidding"
+  end
+
   def sniper_lost
     main_window.status_label.text = "Lost"
   end
