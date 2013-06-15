@@ -20,7 +20,7 @@ class FakeAuctionServer
   end
 
   def close
-    send_message ""
+    send_message Main::CLOSE_EVENT_FORMAT
   end
 
   def wait_for_join_request_from_sniper sniper_id

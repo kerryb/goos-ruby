@@ -30,6 +30,9 @@ class Main
     stop_ui
   end
 
+  def current_price price, increment
+  end
+
   def auction_closed
     main_window.status_label.text = "Lost"
   end
