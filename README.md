@@ -32,7 +32,8 @@ I can poke them and assert things about them from the end-to-end tests.
 ### Testing
 
 I'm using [Cucumber](http://cukes.info/) for end-to-end/acceptance tests, and
-[RSpec](http://rspec.info/) for unit tests.
+[RSpec](http://rspec.info/) (version 2.14.0rc1, so I can use spies) for unit
+tests.
 
 To test the UI, I'm just calling methods directly on the main Gtk::Window
 object (which still runs as normal and can be seen on the screen as the tests

@@ -8,5 +8,5 @@ gem "vines"
 group :development do
   gem "cucumber"
   gem "debugger"
-  gem "rspec"
+  gem "rspec", "~> 2.14.0.rc1"
 end
