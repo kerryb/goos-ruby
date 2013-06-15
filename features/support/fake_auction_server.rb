@@ -21,6 +21,12 @@ class FakeAuctionServer
     end
   end
 
+  def report_price price, increment, current_high_bidder
+    EM.next_tick do
+      client.write Blather::Stanza::Message.new(sniper_id, Main::PRICE_EVENT_FORMAT % [price, increment, current_high_bidder])
+    end
+  end
+
   def wait_for_sniper_to_bid amount, sniper_id
     Timeout.timeout 5 do
       sleep 0.1 until has_received_message?(Main::BID_COMMAND_FORMAT % amount, sniper_id)
