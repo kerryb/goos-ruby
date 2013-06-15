@@ -1,6 +1,7 @@
 require "blather/client/client"
 require "gtk2"
 
+require "auction_sniper"
 require "auction_message_translator"
 require "ui/main_window"
 
@@ -31,7 +32,7 @@ class Main
   def current_price price, increment
   end
 
-  def auction_closed
+  def sniper_lost
     main_window.status_label.text = "Lost"
   end
 
@@ -47,7 +48,7 @@ class Main
     Thread.new { EM.run } unless EM.reactor_running?
     @client = Blather::Client.setup id, passsword
     client.register_handler(:ready) { join_auction }
-    client.register_handler :message, &AuctionMessageTranslator.for(self)
+    client.register_handler :message, &AuctionMessageTranslator.for(AuctionSniper.new(self))
     client.connect
   end
 

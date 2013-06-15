@@ -3,6 +3,10 @@ class AuctionSniper
     @sniper_listener = sniper_listener
   end
 
+  def current_price price, increment
+    # TODO
+  end
+
   def auction_closed
     sniper_listener.sniper_lost
   end
