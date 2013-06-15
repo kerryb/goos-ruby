@@ -7,3 +7,5 @@ module RunsFakeAuction
   end
 end
 World RunsFakeAuction
+
+After { auction.stop if @auction }

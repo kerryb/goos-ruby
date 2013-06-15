@@ -33,6 +33,10 @@ class FakeAuctionServer
     end
   end
 
+  def stop
+    EM.next_tick { client.close }
+  end
+
   private
 
   attr_reader :client, :message
@@ -54,10 +58,6 @@ class FakeAuctionServer
   end
 
   def connect
-    Thread.new do
-      EM.run do
-        client.connect
-      end
-    end
+    client.connect
   end
 end

@@ -15,7 +15,7 @@ class Main
   end
 
   def self.main id, passsword, item_id
-    new(item_id).start id, passsword
+    new(item_id).tap {|m| m.start id, passsword }
   end
 
   def self.drb_connection
@@ -25,6 +25,12 @@ class Main
   def start id, passsword
     start_xmpp_client id, passsword
     start_ui
+  end
+
+  def stop
+    stop_xmpp_client
+    stop_ui
+    stop_remote_test_access
   end
 
   private
@@ -50,7 +56,11 @@ class Main
       window.status_label.text = "Lost"
     end
 
-    Thread.new { EM.run { client.connect } }
+    client.connect
+  end
+
+  def stop_xmpp_client
+    EM.next_tick { client.stop }
   end
 
   # Blocks main thread
@@ -58,10 +68,18 @@ class Main
     @window = Ui::MainWindow.new
     enable_remote_test_access window
     Gtk.init
-    Gtk.main
+    Thread.new { Gtk.main }
+  end
+
+  def stop_ui
+    window.destroy
   end
 
   def enable_remote_test_access window
     DRb.start_service DRB_URI, window
+  end
+
+  def stop_remote_test_access
+    DRb.stop_service
   end
 end

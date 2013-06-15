@@ -5,15 +5,13 @@ class ApplicationRunner
   SNIPER_PASSWORD = "sniper"
 
   def start_bidding_in auction
-    Thread.new do
-      Main.main SNIPER_ID, SNIPER_PASSWORD, auction.item_id
-    end
+    @application = Main.main SNIPER_ID, SNIPER_PASSWORD, auction.item_id
     wait_for_app_to_start
     wait_for_status "Joining"
   end
 
   def stop
-    app.stop
+    application.stop
   end
 
   def has_lost_auction?
@@ -21,6 +19,8 @@ class ApplicationRunner
   end
 
   private
+
+  attr_reader :application
 
   def wait_for_app_to_start
     Timeout.timeout 10 do

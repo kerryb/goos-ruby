@@ -5,6 +5,4 @@ module DrivesApplication
 end
 World DrivesApplication
 
-After do
-  sniper.stop if sniper
-end
+After { sniper.stop if @sniper }
