@@ -2,7 +2,11 @@
 
 My attempt at implementing the auction sniper example from part II of *Growing
 Object-Oriented Software, Guided By Tests*. I've tagged the repository at the
-end of each chapter (currently I've only done chapters 10 and 11).
+end of each chapter:
+
+* [Chapter 10](https://github.com/kerryb/goos-ruby/tree/chapter-10)
+* [Chapter 11](https://github.com/kerryb/goos-ruby/tree/chapter-11)
+* [Chapter 12](https://github.com/kerryb/goos-ruby/tree/chapter-12)
 
 ## Tools
 
