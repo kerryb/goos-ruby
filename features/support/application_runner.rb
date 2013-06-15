@@ -14,6 +14,10 @@ class ApplicationRunner
     application.stop
   end
 
+  def bidding?
+    wait_for_status "Bidding"
+  end
+
   def has_lost_auction?
     wait_for_status "Lost"
   end
