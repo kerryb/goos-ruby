@@ -3,6 +3,7 @@ require "gtk2"
 
 require "auction_sniper"
 require "auction_message_translator"
+require "sniper_state_displayer"
 require "ui/main_window"
 require "xmpp_auction"
 
@@ -18,6 +19,7 @@ class Main
   end
 
   def start id, passsword
+    @main_window = Ui::MainWindow.new
     start_xmpp_client id, passsword
     start_ui
   end
@@ -28,14 +30,6 @@ class Main
   end
 
   def current_price price, increment
-  end
-
-  def sniper_bidding
-    main_window.status_label.text = "Bidding"
-  end
-
-  def sniper_lost
-    main_window.status_label.text = "Lost"
   end
 
   private
@@ -52,7 +46,7 @@ class Main
     auction = XmppAuction.new client, auction_id
     client.register_handler(:ready) { auction.join }
     client.register_handler :message,
-      &AuctionMessageTranslator.for(AuctionSniper.new(auction, self))
+      &AuctionMessageTranslator.for(AuctionSniper.new(auction, SniperStateDisplayer.new(main_window)))
     client.connect
   end
 
@@ -68,7 +62,6 @@ class Main
 
   # Blocks main thread
   def start_ui
-    @main_window = Ui::MainWindow.new
     Gtk.init
     Thread.new { Gtk.main }
   end

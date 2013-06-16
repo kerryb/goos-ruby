@@ -1,3 +1,4 @@
+require "xmpp_auction"
 require "support/roles/auction"
 
 describe XmppAuction do
