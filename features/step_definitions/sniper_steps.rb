@@ -5,7 +5,7 @@ end
 
 Then "I should place a higher bid" do
   expect(sniper).to be_bidding
-  auction.wait_for_bid 1098, ApplicationRunner::SNIPER_ID
+  auction.wait_for_sniper_to_bid 1098, ApplicationRunner::SNIPER_ID
 end
 
 Then "I should have lost the auction" do
