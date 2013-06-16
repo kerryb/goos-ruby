@@ -48,13 +48,23 @@ class Main
     "auction-#{item_id}@localhost"
   end
 
+  class Auction
+    def initialize client, auction_id
+      @client, @auction_id = client, auction_id
+    end
+    def bid amount
+      EM.next_tick do
+        @client.write Blather::Stanza::Message.new(@auction_id, Main::BID_COMMAND_FORMAT % amount)
+      end
+    end
+  end
+
   def start_xmpp_client id, passsword
     Thread.new { EM.run } unless EM.reactor_running?
     @client = Blather::Client.setup id, passsword
     client.register_handler(:ready) { join_auction }
-    null_auction = Object.new.tap {|a| def a.bid(_);end }
     client.register_handler :message,
-      &AuctionMessageTranslator.for(AuctionSniper.new(null_auction, self))
+      &AuctionMessageTranslator.for(AuctionSniper.new(Auction.new(client, auction_id), self))
     client.connect
   end
 
