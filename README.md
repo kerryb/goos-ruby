@@ -42,3 +42,24 @@ tests.
 To test the UI, I'm just calling methods directly on the main Gtk::Window
 object (which still runs as normal and can be seen on the screen as the tests
 run).
+
+## Notes
+
+### Interfaces and roles
+
+I'm trying to stick pretty closely to the design used in the book. However, the
+book makes heavy use of Java interfaces, which don't exist in Ruby. As a
+compromise between explicit interfaces and pure duck-typing, I've created
+[specs for the
+interfaces](https://github.com/kerryb/goos-ruby/tree/master/spec/support/roles),
+which simply check that anything acting as that role (including test doubles)
+implements the correct methods. I was originally checking the methods' arity
+too, but that didn't work with RSpec doubles.
+
+### AuctionMessageTranslator
+
+In the book, this implements the `MessageListener` interface, which is part of
+the Smack XMPP client API. The
+[equivalent behaviour in Blather](http://rubydoc.info/github/sprsquish/blather/Blather/Client#register_handler-instance_method)
+is implemented using blocks, so my `AuctionMessageTranslator.for` method
+returns a lambda, which can be registered as an event handler.
