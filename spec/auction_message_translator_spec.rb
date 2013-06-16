@@ -1,4 +1,4 @@
-require "support/interfaces/auction_event_listener"
+require "support/roles/auction_event_listener"
 require "auction_message_translator"
 
 describe AuctionMessageTranslator do

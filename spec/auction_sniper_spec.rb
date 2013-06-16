@@ -1,5 +1,5 @@
-require "support/interfaces/sniper_listener"
-require "support/interfaces/auction_event_listener"
+require "support/roles/sniper_listener"
+require "support/roles/auction_event_listener"
 require "auction_sniper"
 
 describe AuctionSniper do

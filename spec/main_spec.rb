@@ -1,4 +1,4 @@
-require "support/interfaces/sniper_listener"
+require "support/roles/sniper_listener"
 require "main"
 
 describe Main do
