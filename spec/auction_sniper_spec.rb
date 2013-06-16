@@ -1,4 +1,5 @@
 require "support/interfaces/sniper_listener"
+require "support/interfaces/auction_event_listener"
 require "auction_sniper"
 
 describe AuctionSniper do
@@ -9,6 +10,8 @@ describe AuctionSniper do
     subject { sniper_listener }
     it_behaves_like "a sniper listener"
   end
+
+  it_behaves_like "an auction event listener"
 
   context "when a new price arrives" do
     let(:price) { 1001 }
