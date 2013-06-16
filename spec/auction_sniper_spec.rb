@@ -1,8 +1,14 @@
+require "support/interfaces/sniper_listener"
 require "auction_sniper"
 
 describe AuctionSniper do
   subject { AuctionSniper.new sniper_listener }
   let(:sniper_listener) { double :sniper_listener, sniper_bidding: true, sniper_lost: true }
+
+  describe "the sniper listener double used in this spec" do
+    subject { sniper_listener }
+    it_behaves_like "a sniper listener"
+  end
 
   context "when a new price arrives" do
     let(:price) { 1001 }
