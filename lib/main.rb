@@ -9,6 +9,29 @@ class Main
   JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;"
   BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;"
 
+  class XmppAuction
+    def initialize client, auction_id
+      @client, @auction_id = client, auction_id
+    end
+
+    def join
+      send_message Main::JOIN_COMMAND_FORMAT
+    end
+
+    def bid amount
+      send_message(Main::BID_COMMAND_FORMAT % amount)
+    end
+
+    private
+
+    attr_reader :client, :auction_id
+    def send_message message
+      EM.next_tick do
+        client.write Blather::Stanza::Message.new(auction_id, message)
+      end
+    end
+  end
+
   attr_reader :main_window
 
   def initialize item_id
@@ -48,23 +71,13 @@ class Main
     "auction-#{item_id}@localhost"
   end
 
-  class Auction
-    def initialize client, auction_id
-      @client, @auction_id = client, auction_id
-    end
-    def bid amount
-      EM.next_tick do
-        @client.write Blather::Stanza::Message.new(@auction_id, Main::BID_COMMAND_FORMAT % amount)
-      end
-    end
-  end
-
   def start_xmpp_client id, passsword
     Thread.new { EM.run } unless EM.reactor_running?
     @client = Blather::Client.setup id, passsword
-    client.register_handler(:ready) { join_auction }
+    auction = XmppAuction.new client, auction_id
+    client.register_handler(:ready) { auction.join }
     client.register_handler :message,
-      &AuctionMessageTranslator.for(AuctionSniper.new(Auction.new(client, auction_id), self))
+      &AuctionMessageTranslator.for(AuctionSniper.new(auction, self))
     client.connect
   end
 

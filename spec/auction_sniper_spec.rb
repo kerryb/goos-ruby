@@ -5,7 +5,7 @@ require "auction_sniper"
 
 describe AuctionSniper do
   subject { AuctionSniper.new auction, sniper_listener }
-  let(:auction) { double :auction, bid: true }
+  let(:auction) { double :auction, join: true, bid: true }
   let(:sniper_listener) { double :sniper_listener, sniper_bidding: true, sniper_lost: true }
 
   describe "the auction double used in this spec" do
