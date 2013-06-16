@@ -52,7 +52,9 @@ class Main
     Thread.new { EM.run } unless EM.reactor_running?
     @client = Blather::Client.setup id, passsword
     client.register_handler(:ready) { join_auction }
-    client.register_handler :message, &AuctionMessageTranslator.for(AuctionSniper.new(self))
+    null_auction = Object.new.tap {|a| def a.bid(_);end }
+    client.register_handler :message,
+      &AuctionMessageTranslator.for(AuctionSniper.new(null_auction, self))
     client.connect
   end
 
