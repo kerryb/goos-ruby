@@ -10,17 +10,18 @@ require "xmpp_auction"
 class Main
   attr_reader :main_window
 
-  def initialize item_id
-    @item_id = item_id
+  class << self
+    alias main new
   end
 
-  def self.main id, passsword, item_id
-    new(item_id).tap {|m| m.start id, passsword }
-  end
-
-  def start id, passsword
+  def initialize id, passsword, item_id
     @main_window = Ui::MainWindow.new
-    start_xmpp_client id, passsword
+    setup_xmpp_client id, passsword
+    auction = XmppAuction.new client, auction_id_for(item_id)
+    client.register_handler(:ready) { auction.join }
+    client.register_handler :message,
+      &AuctionMessageTranslator.for(AuctionSniper.new(auction, SniperStateDisplayer.new(main_window)))
+    client.connect
     start_ui
   end
 
@@ -29,31 +30,17 @@ class Main
     stop_ui
   end
 
-  def current_price price, increment
-  end
-
   private
 
-  attr_reader :client, :item_id
+  attr_reader :client
 
-  def auction_id
+  def auction_id_for item_id
     "auction-#{item_id}@localhost"
   end
 
-  def start_xmpp_client id, passsword
+  def setup_xmpp_client id, passsword
     Thread.new { EM.run } unless EM.reactor_running?
     @client = Blather::Client.setup id, passsword
-    auction = XmppAuction.new client, auction_id
-    client.register_handler(:ready) { auction.join }
-    client.register_handler :message,
-      &AuctionMessageTranslator.for(AuctionSniper.new(auction, SniperStateDisplayer.new(main_window)))
-    client.connect
-  end
-
-  def join_auction
-    EM.next_tick do
-      client.write Blather::Stanza::Message.new(auction_id, JOIN_COMMAND_FORMAT)
-    end
   end
 
   def stop_xmpp_client
