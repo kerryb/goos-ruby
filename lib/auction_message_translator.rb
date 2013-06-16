@@ -1,18 +1,46 @@
 module AuctionMessageTranslator
   def self.for listener
     ->(message) {
-      event = unpack_event_from message
-      case event["Event"]
+      event = AuctionEvent.from message
+      case event.type
       when "PRICE"
-        listener.current_price Integer(event["CurrentPrice"]), Integer(event["Increment"])
+        listener.current_price event.current_price, event.increment
       when "CLOSE"
         listener.auction_closed
       end
     }
   end
 
-  def self.unpack_event_from message
-    Hash[*message.body.split(";").flat_map {|a| a.split ":" }.map(&:strip)]
+  class AuctionEvent
+    def initialize fields
+      @fields = fields
+    end
+
+    def self.from message
+      new fields_in(message.body)
+    end
+
+    def type
+      fields.fetch "Event"
+    end
+
+    def current_price
+      Integer(fields.fetch "CurrentPrice")
+    end
+
+    def increment
+      Integer(fields.fetch "Increment")
+    end
+
+    private
+
+    attr_reader :fields
+
+    def self.fields_in body
+      fields = body.split ";"
+      name_value_pairs = fields.flat_map {|a| a.split ":" }.map(&:strip)
+      Hash[*name_value_pairs]
+    end
+    private_class_method :fields_in
   end
-  private_class_method :unpack_event_from
 end
