@@ -22,6 +22,10 @@ class ApplicationRunner
     wait_for_status "Lost"
   end
 
+  def has_won_auction?
+    wait_for_status "Won"
+  end
+
   private
 
   def window
