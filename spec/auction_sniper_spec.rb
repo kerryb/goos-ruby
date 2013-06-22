@@ -34,14 +34,9 @@ describe AuctionSniper do
     end
   end
 
-  context "when the action closes immediately" do
-    before do
-      sniper_listener.stub :sniper_lost
-      subject.auction_closed
-    end
-
-    it "reports that the sniper has lost" do
-      expect(sniper_listener).to have_received :sniper_lost
-    end
+  it "reports that the sniper has lost when the action closes immediately" do
+    sniper_listener.stub :sniper_lost
+    subject.auction_closed
+    expect(sniper_listener).to have_received :sniper_lost
   end
 end
