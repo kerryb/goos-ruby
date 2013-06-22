@@ -11,6 +11,10 @@ class SniperStateDisplayer
     show_status "Winning"
   end
 
+  def sniper_won
+    show_status "Won"
+  end
+
   def sniper_lost
     show_status "Lost"
   end

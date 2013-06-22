@@ -49,4 +49,14 @@ describe AuctionSniper do
 
     expect(sniper_listener).to have_received :sniper_lost
   end
+
+  it "reports that the sniper has won when the action closes while winning" do
+    sniper_listener.stub(:sniper_winning) { @sniper_state = :winning }
+    sniper_listener.stub(:sniper_won) { expect(@sniper_state).to be :winning }
+
+    subject.current_price 123, 45, :from_sniper
+    subject.auction_closed
+
+    expect(sniper_listener).to have_received :sniper_won
+  end
 end
