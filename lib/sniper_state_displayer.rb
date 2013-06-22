@@ -4,10 +4,16 @@ class SniperStateDisplayer
   end
 
   def sniper_bidding
-    @main_window.status_label.text = "Bidding"
+    show_status "Bidding"
   end
 
   def sniper_lost
-    @main_window.status_label.text = "Lost"
+    show_status "Lost"
+  end
+
+  private
+
+  def show_status status
+    EM.next_tick { @main_window.status_label.text = status }
   end
 end
