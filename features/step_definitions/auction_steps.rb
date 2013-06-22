@@ -7,7 +7,7 @@ When "I am told the current price, bid increment and high bidder" do
 end
 
 When "I am told that I am the high bidder" do
-  pending
+  auction.report_price 1098, 97, ApplicationRunner::SNIPER_ID
 end
 
 When "the auction closes" do
