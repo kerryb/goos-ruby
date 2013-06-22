@@ -39,7 +39,7 @@ class ApplicationRunner
       sleep 0.1 until all_widgets_of_type(Gtk::Label).any? {|e| e.text == status }
       return true
     end
-  rescue Timeout::Error => e
+  rescue Timeout::Error
     labels = all_widgets_of_type(Gtk::Label).map(&:text)
     fail %{Looking for label with text "#{status}", but only found #{labels.inspect}}
   end
