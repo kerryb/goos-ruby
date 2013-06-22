@@ -18,6 +18,10 @@ class ApplicationRunner
     wait_for_status "Bidding"
   end
 
+  def winning_auction?
+    wait_for_status "Winning"
+  end
+
   def has_lost_auction?
     wait_for_status "Lost"
   end
