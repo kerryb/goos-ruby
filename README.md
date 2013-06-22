@@ -69,3 +69,9 @@ the Smack XMPP client API. The
 [equivalent behaviour in Blather](http://rubydoc.info/github/sprsquish/blather/Blather/Client#register_handler-instance_method)
 is implemented using blocks, so my `AuctionMessageTranslator.for` method
 returns a lambda, which can be registered as an event handler.
+
+### Bugs
+
+There seems to be a race condition on startup -- every so often a feature will
+fail because (I think) the auction server never receives a join request from
+the sniper.
