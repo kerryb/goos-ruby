@@ -4,15 +4,11 @@ class AuctionSniper
   end
 
   def current_price price, increment
-    auction.bid price + increment
-    sniper_listener.sniper_bidding
+    @auction.bid price + increment
+    @sniper_listener.sniper_bidding
   end
 
   def auction_closed
-    sniper_listener.sniper_lost
+    @sniper_listener.sniper_lost
   end
-
-  private
-
-  attr_reader :auction, :sniper_listener
 end

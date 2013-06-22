@@ -21,20 +21,18 @@ module AuctionMessageTranslator
     end
 
     def type
-      fields.fetch "Event"
+      @fields.fetch "Event"
     end
 
     def current_price
-      Integer(fields.fetch "CurrentPrice")
+      Integer(@fields.fetch "CurrentPrice")
     end
 
     def increment
-      Integer(fields.fetch "Increment")
+      Integer(@fields.fetch "Increment")
     end
 
     private
-
-    attr_reader :fields
 
     def self.fields_in body
       fields = body.split ";"

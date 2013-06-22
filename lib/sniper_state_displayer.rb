@@ -4,14 +4,10 @@ class SniperStateDisplayer
   end
 
   def sniper_bidding
-    main_window.status_label.text = "Bidding"
+    @main_window.status_label.text = "Bidding"
   end
 
   def sniper_lost
-    main_window.status_label.text = "Lost"
+    @main_window.status_label.text = "Lost"
   end
-
-  private
-
-  attr_reader :main_window
 end

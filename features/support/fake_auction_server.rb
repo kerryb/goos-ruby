@@ -13,8 +13,8 @@ class FakeAuctionServer
   def start_selling_item
     Thread.new { EM.run } unless EM.reactor_running?
     @client = Blather::Client.setup auction_login, auction_password
-    client.register_handler :message do |m|
-      @message = m
+    @client.register_handler :message do |m|
+      @received_message = m
     end
     connect
   end
@@ -40,12 +40,10 @@ class FakeAuctionServer
   end
 
   def stop
-    EM.next_tick { client.close }
+    EM.next_tick { @client.close }
   end
 
   private
-
-  attr_reader :client, :message
 
   def auction_password
     "auction"
@@ -61,15 +59,15 @@ class FakeAuctionServer
 
   def send_message message
     EM.next_tick do
-      client.write Blather::Stanza::Message.new(sniper_id, message)
+      @client.write Blather::Stanza::Message.new(sniper_id, message)
     end
   end
 
   def has_received_message? text, sender
-    message && message.body == text && message.from.stripped == sender
+    @received_message && @received_message.body == text && @received_message.from.stripped == sender
   end
 
   def connect
-    client.connect
+    @client.connect
   end
 end

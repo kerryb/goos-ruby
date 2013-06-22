@@ -11,7 +11,7 @@ class ApplicationRunner
   end
 
   def stop
-    application.stop
+    @application.stop
   end
 
   def bidding?
@@ -24,15 +24,13 @@ class ApplicationRunner
 
   private
 
-  attr_reader :application
-
   def window
-    application.main_window
+    @application.main_window
   end
 
   def wait_for_app_to_start
     Timeout.timeout 10 do
-      sleep 0.1 until application.main_window.title == "Auction sniper"
+      sleep 0.1 until @application.main_window.title == "Auction sniper"
     end
   end
 

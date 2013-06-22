@@ -18,10 +18,9 @@ class XmppAuction
 
   private
 
-  attr_reader :client, :auction_id
   def send_message message
     EM.next_tick do
-      client.write Blather::Stanza::Message.new(auction_id, message)
+      @client.write Blather::Stanza::Message.new(@auction_id, message)
     end
   end
 end

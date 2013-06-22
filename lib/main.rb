@@ -17,11 +17,11 @@ class Main
   def initialize id, passsword, item_id
     @main_window = Ui::MainWindow.new
     setup_xmpp_client id, passsword
-    auction = XmppAuction.new client, auction_id_for(item_id)
-    client.register_handler(:ready) { auction.join }
-    client.register_handler :message,
+    auction = XmppAuction.new @client, auction_id_for(item_id)
+    @client.register_handler(:ready) { auction.join }
+    @client.register_handler :message,
       &AuctionMessageTranslator.for(AuctionSniper.new(auction, SniperStateDisplayer.new(main_window)))
-    client.connect
+    @client.connect
     start_ui
   end
 
@@ -31,8 +31,6 @@ class Main
   end
 
   private
-
-  attr_reader :client
 
   def auction_id_for item_id
     "auction-#{item_id}@localhost"
@@ -44,7 +42,7 @@ class Main
   end
 
   def stop_xmpp_client
-    EM.next_tick { client.stop }
+    EM.next_tick { @client.stop }
   end
 
   # Blocks main thread
