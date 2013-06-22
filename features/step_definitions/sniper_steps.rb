@@ -11,3 +11,7 @@ end
 Then "I should have lost the auction" do
   expect(sniper).to have_lost_auction
 end
+
+Then "I should have won the auction" do
+  pending
+end

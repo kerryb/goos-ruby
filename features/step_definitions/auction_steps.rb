@@ -6,6 +6,10 @@ When "I am told the current price, bid increment and high bidder" do
   auction.report_price 1000, 98, "other bidder"
 end
 
+When "I am told that I am the high bidder" do
+  pending
+end
+
 When "the auction closes" do
   auction.close
 end

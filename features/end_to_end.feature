@@ -15,3 +15,12 @@ Feature: End-to-end test
     Then I should place a higher bid
     When the auction closes
     Then I should have lost the auction
+
+  Scenario: Place a bid and win
+    Given an auction of an item is in progress
+    When I start bidding in the auction
+    And I am told the current price, bid increment and high bidder
+    Then I should place a higher bid
+    When I am told that I am the high bidder
+    And the auction closes
+    Then I should have won the auction
