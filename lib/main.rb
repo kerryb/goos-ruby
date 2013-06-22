@@ -20,7 +20,8 @@ class Main
     auction = XmppAuction.new @client, auction_id_for(item_id)
     @client.register_handler(:ready) { auction.join }
     @client.register_handler :message,
-      &AuctionMessageTranslator.for(AuctionSniper.new(auction, SniperStateDisplayer.new(main_window)))
+      &AuctionMessageTranslator.for(@client.jid.stripped.to_s,
+                                    AuctionSniper.new(auction, SniperStateDisplayer.new(main_window)))
     @client.connect
     start_ui
   end

@@ -1,10 +1,10 @@
 module AuctionMessageTranslator
-  def self.for listener
+  def self.for sniper_id, listener
     ->(message) {
       event = AuctionEvent.from message
       case event.type
       when "PRICE"
-        listener.current_price event.current_price, event.increment
+        listener.current_price event.current_price, event.increment, event.is_from?(sniper_id)
       when "CLOSE"
         listener.auction_closed
       end
@@ -30,6 +30,10 @@ module AuctionMessageTranslator
 
     def increment
       Integer(@fields.fetch "Increment")
+    end
+
+    def is_from? sniper_id
+      @fields.fetch("Bidder") == sniper_id ? :from_sniper : :from_other_bidder
     end
 
     private
