@@ -39,4 +39,14 @@ describe AuctionSniper do
     subject.auction_closed
     expect(sniper_listener).to have_received :sniper_lost
   end
+
+  it "reports that the sniper has lost when the action closes while bidding" do
+    sniper_listener.stub(:sniper_bidding) { @sniper_state = :bidding }
+    sniper_listener.stub(:sniper_lost) { expect(@sniper_state).to be :bidding }
+
+    subject.current_price 123, 45, :from_other_bidder
+    subject.auction_closed
+
+    expect(sniper_listener).to have_received :sniper_lost
+  end
 end
