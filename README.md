@@ -8,6 +8,7 @@ end of each chapter:
 * [Chapter 11](https://github.com/kerryb/goos-ruby/tree/chapter-11)
 * [Chapter 12](https://github.com/kerryb/goos-ruby/tree/chapter-12)
 * [Chapter 13](https://github.com/kerryb/goos-ruby/tree/chapter-13)
+* [Chapter 14](https://github.com/kerryb/goos-ruby/tree/chapter-14)
 
 ## Tools
 
@@ -58,9 +59,8 @@ book makes heavy use of Java interfaces, which don't exist in Ruby. As a
 compromise between explicit interfaces and pure duck-typing, I've created
 [specs for the
 interfaces](https://github.com/kerryb/goos-ruby/tree/master/spec/support/roles),
-which simply check that anything acting as that role (including test doubles)
-implements the correct methods. I was originally checking the methods' arity
-too, but that didn't work with RSpec doubles.
+which simply check that anything acting as that role implements the correct
+methods.
 
 ### AuctionMessageTranslator
 
@@ -69,6 +69,12 @@ the Smack XMPP client API. The
 [equivalent behaviour in Blather](http://rubydoc.info/github/sprsquish/blather/Blather/Client#register_handler-instance_method)
 is implemented using blocks, so my `AuctionMessageTranslator.for` method
 returns a lambda, which can be registered as an event handler.
+
+### Checking state with doubles in specs
+
+RSpec doesn't have the "states" feature from JMock, but it's easy enough to
+replicate by executing a block when the stubbed methods are called, and setting
+or checking an instance variable as appropriate.
 
 ### Bugs
 
