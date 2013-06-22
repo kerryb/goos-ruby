@@ -29,13 +29,13 @@ class FakeAuctionServer
 
   def wait_for_join_request_from_sniper sniper_id
     Timeout.timeout 5 do
-      sleep 0.1 until has_received_message?(XmppAuction::JOIN_COMMAND_FORMAT, sniper_id)
+      sleep 0.01 until has_received_message?(XmppAuction::JOIN_COMMAND_FORMAT, sniper_id)
     end
   end
 
   def wait_for_sniper_to_bid amount, sniper_id
     Timeout.timeout 5 do
-      sleep 0.1 until has_received_message?(XmppAuction::BID_COMMAND_FORMAT % amount, sniper_id)
+      sleep 0.01 until has_received_message?(XmppAuction::BID_COMMAND_FORMAT % amount, sniper_id)
     end
   end
 

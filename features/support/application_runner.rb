@@ -30,13 +30,13 @@ class ApplicationRunner
 
   def wait_for_app_to_start
     Timeout.timeout 10 do
-      sleep 0.1 until @application.main_window.title == "Auction sniper"
+      sleep 0.01 until @application.main_window.title == "Auction sniper"
     end
   end
 
   def wait_for_status status
     Timeout.timeout 2 do
-      sleep 0.1 until all_widgets_of_type(Gtk::Label).any? {|e| e.text == status }
+      sleep 0.01 until all_widgets_of_type(Gtk::Label).any? {|e| e.text == status }
       return true
     end
   rescue Timeout::Error
