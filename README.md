@@ -11,6 +11,11 @@ end of each chapter:
 
 ## Tools
 
+### Ruby
+
+Tested using the version in `.ruby-version`. I started in 1.9.3 then switched
+to 2.0.0, but as far as I know anything 1.9 or above ought to work.
+
 ### XMPP
 
 The [Vines](http://www.getvines.org/) XMPP server is started and stopped
