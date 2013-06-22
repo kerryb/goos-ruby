@@ -30,5 +30,6 @@ task :success do
 end
 
 task :run do
+  Thread.new { EM.run }
   Main.main "sniper@localhost", "sniper", ""
 end

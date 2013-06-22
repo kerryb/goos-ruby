@@ -26,8 +26,7 @@ class Main
   end
 
   def stop
-    stop_xmpp_client
-    stop_ui
+    main_window.destroy
   end
 
   private
@@ -37,21 +36,12 @@ class Main
   end
 
   def setup_xmpp_client id, passsword
-    Thread.new { EM.run } unless EM.reactor_running?
     @client = Blather::Client.setup id, passsword
-  end
-
-  def stop_xmpp_client
-    EM.next_tick { @client.stop }
   end
 
   # Blocks main thread
   def start_ui
     Gtk.init
     Thread.new { Gtk.main }
-  end
-
-  def stop_ui
-    main_window.destroy
   end
 end
