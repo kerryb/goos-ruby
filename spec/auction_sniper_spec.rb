@@ -6,25 +6,24 @@ require "auction_sniper"
 describe AuctionSniper do
   subject { AuctionSniper.new auction, sniper_listener }
   let(:auction) { double :auction, join: true, bid: true }
-  let(:sniper_listener) { double :sniper_listener, sniper_bidding: true, sniper_lost: true }
-
-  describe "the auction double used in this spec" do
-    subject { auction }
-    it_behaves_like "an auction"
-  end
-
-  describe "the sniper listener double used in this spec" do
-    subject { sniper_listener }
-    it_behaves_like "a sniper listener"
-  end
+  let(:sniper_listener) { double :sniper_listener }
 
   it_behaves_like "an auction event listener"
+
+  it "reports that it's winning when the current price is from the sniper" do
+    sniper_listener.stub :sniper_winning
+    subject.current_price 123, 45, :from_sniper
+    expect(sniper_listener).to have_received :sniper_winning
+  end
 
   context "when a new price arrives" do
     let(:price) { 1001 }
     let(:increment) { 25 }
 
-    before { subject.current_price price, increment }
+    before do
+      sniper_listener.stub :sniper_bidding
+      subject.current_price price, increment, :from_other_bidder
+    end
 
     it "bids higher" do
       expect(auction).to have_received(:bid).with(price + increment)
@@ -36,7 +35,10 @@ describe AuctionSniper do
   end
 
   context "when the action closes" do
-    before { subject.auction_closed }
+    before do
+      sniper_listener.stub :sniper_lost
+      subject.auction_closed
+    end
 
     it "reports that the sniper has lost" do
       expect(sniper_listener).to have_received :sniper_lost
