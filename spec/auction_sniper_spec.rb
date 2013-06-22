@@ -16,7 +16,7 @@ describe AuctionSniper do
     expect(sniper_listener).to have_received :sniper_winning
   end
 
-  context "when a new price arrives" do
+  context "when a new price arrives from another bidder" do
     let(:price) { 1001 }
     let(:increment) { 25 }
 
@@ -34,7 +34,7 @@ describe AuctionSniper do
     end
   end
 
-  context "when the action closes" do
+  context "when the action closes immediately" do
     before do
       sniper_listener.stub :sniper_lost
       subject.auction_closed
