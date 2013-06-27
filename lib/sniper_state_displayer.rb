@@ -22,6 +22,6 @@ class SniperStateDisplayer
   private
 
   def show_status status
-    EM.next_tick { @main_window.status_label.text = status }
+    EM.next_tick { @main_window.show_status status }
   end
 end

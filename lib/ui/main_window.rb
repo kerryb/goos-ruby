@@ -17,6 +17,12 @@ module Ui
       show_all
     end
 
+    def show_status status
+      status_label.text = status
+    end
+
+    private
+
     def init_ui
       fixed = Gtk::Fixed.new
     end
