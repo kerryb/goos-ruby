@@ -10,19 +10,11 @@ module Ui
 
       @status_label = Gtk::Label.new "Joining"
       add @status_label
-
-      init_ui
       show_all
     end
 
     def show_status status
       @status_label.text = status
-    end
-
-    private
-
-    def init_ui
-      fixed = Gtk::Fixed.new
     end
   end
 end
