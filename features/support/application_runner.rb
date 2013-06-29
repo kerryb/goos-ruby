@@ -5,7 +5,8 @@ class ApplicationRunner
   SNIPER_PASSWORD = "sniper"
 
   def start_bidding_in auction
-    @application = Main.main SNIPER_ID, SNIPER_PASSWORD, auction.item_id
+    @item_id = auction.item_id
+    @application = Main.main SNIPER_ID, SNIPER_PASSWORD, @item_id
     wait_for_app_to_start
     wait_for_status "Joining"
   end
@@ -14,8 +15,8 @@ class ApplicationRunner
     @application.stop
   end
 
-  def bidding?
-    wait_for_status "Bidding"
+  def bidding? last_price, last_bid
+    wait_for_status @item_id, last_price, last_bid, "Bidding"
   end
 
   def winning_auction?
@@ -42,16 +43,16 @@ class ApplicationRunner
     end
   end
 
-  def wait_for_status status
+  def wait_for_status *columns
     Timeout.timeout 2 do
-      sleep 0.01 until displayed_status == status
+      sleep 0.01 until displayed_columns == columns
       return true
     end
   rescue Timeout::Error
-    fail %{Expected displayed status to be "#{status}", but was #{displayed_status}}
+    fail %{Expected displayed status to be "#{columns}", but was #{displayed_columns}}
   end
 
-  def displayed_status
-    window.child.model.iter_first[0]
+  def displayed_columns
+    window.child.model.n_columns.times.map {|n| window.child.model.iter_first[n]}
   end
 end

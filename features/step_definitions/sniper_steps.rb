@@ -4,7 +4,7 @@ When "I start bidding in the auction" do
 end
 
 Then "I should place a higher bid" do
-  expect(sniper).to be_bidding
+  expect(sniper).to be_bidding(1000, 1098)
   auction.wait_for_sniper_to_bid 1098, ApplicationRunner::SNIPER_ID
 end
 
