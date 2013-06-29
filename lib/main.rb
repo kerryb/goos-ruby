@@ -17,13 +17,16 @@ class Main
   def initialize id, passsword, item_id
     @main_window = Ui::MainWindow.new
     setup_xmpp_client id, passsword
+    start_ui
     auction = XmppAuction.new @client, auction_id_for(item_id)
-    @client.register_handler(:ready) { auction.join }
+    @client.register_handler(:ready) do
+      @main_window.show_status "Joining"
+      auction.join
+    end
     @client.register_handler :message,
       &AuctionMessageTranslator.for(@client.jid.stripped.to_s,
                                     AuctionSniper.new(auction, SniperStateDisplayer.new(main_window)))
     @client.connect
-    start_ui
   end
 
   def stop
