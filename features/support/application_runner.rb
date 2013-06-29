@@ -44,20 +44,14 @@ class ApplicationRunner
 
   def wait_for_status status
     Timeout.timeout 2 do
-      sleep 0.01 until all_widgets_of_type(Gtk::Label).any? {|e| e.text == status }
+      sleep 0.01 until displayed_status == status
       return true
     end
   rescue Timeout::Error
-    labels = all_widgets_of_type(Gtk::Label).map(&:text)
-    fail %{Looking for label with text "#{status}", but only found #{labels.inspect}}
+    fail %{Expected displayed status to be "#{status}", but was #{displayed_status}}
   end
 
-  def all_widgets_of_type type
-    widget_and_children(window).flatten.select {|w| w.is_a? type }
-  end
-
-  def widget_and_children widget
-    return [widget] unless widget.respond_to? :children
-    [widget] + widget.children.map {|w| widget_and_children w }
+  def displayed_status
+    window.child.model.iter_first[0]
   end
 end
