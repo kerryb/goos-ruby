@@ -1,5 +1,4 @@
 require "blather/client/client"
-require "gtk2"
 
 require "auction_sniper"
 require "auction_message_translator"
@@ -19,10 +18,7 @@ class Main
     setup_xmpp_client id, passsword
     start_ui
     auction = XmppAuction.new @client, auction_id_for(item_id)
-    @client.register_handler(:ready) do
-      @main_window.show_status "Joining"
-      auction.join
-    end
+    @client.register_handler(:ready) { auction.join }
     auction_sniper = AuctionSniper.new(auction,
                                        item_id,
                                        SniperStateDisplayer.new(main_window))

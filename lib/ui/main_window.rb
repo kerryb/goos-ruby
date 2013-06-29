@@ -1,3 +1,4 @@
+require "gtk2"
 require "ui/snipers_table_model"
 
 module Ui
@@ -30,7 +31,9 @@ module Ui
       view = Gtk::TreeView.new @snipers
       view.name = "snipers"
       renderer = Gtk::CellRendererText.new
-      view.append_column Gtk::TreeViewColumn.new("A", renderer, text: 0)
+      SnipersTableModel::COLUMNS.each_with_index do |_, index|
+        view.append_column Gtk::TreeViewColumn.new("", renderer, text: index)
+      end
       view
     end
   end

@@ -8,7 +8,7 @@ class ApplicationRunner
     @item_id = auction.item_id
     @application = Main.main SNIPER_ID, SNIPER_PASSWORD, @item_id
     wait_for_app_to_start
-    wait_for_status "Joining"
+    wait_for_status "", 0, 0, "Joining"
   end
 
   def stop
