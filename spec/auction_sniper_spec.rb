@@ -32,7 +32,7 @@ describe AuctionSniper do
 
     it "reports that it is bidding" do
       expect(sniper_listener).to have_received(:sniper_bidding).with(
-        SniperState.new(item_id, price, price + increment)
+        SniperSnapshot.new(item_id, price, price + increment)
       )
     end
   end
