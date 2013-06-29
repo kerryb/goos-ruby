@@ -1,6 +1,8 @@
+require "sniper_state"
+
 class AuctionSniper
-  def initialize auction, sniper_listener
-    @auction, @sniper_listener = auction, sniper_listener
+  def initialize auction, item_id, sniper_listener
+    @auction, @item_id, @sniper_listener = auction, item_id, sniper_listener
     @is_winning = false
   end
 
@@ -9,8 +11,9 @@ class AuctionSniper
     if @is_winning
       @sniper_listener.sniper_winning
     else
-      @auction.bid price + increment
-      @sniper_listener.sniper_bidding
+      bid = price + increment
+      @auction.bid bid
+      @sniper_listener.sniper_bidding SniperState.new(@item_id, price, bid)
     end
   end
 

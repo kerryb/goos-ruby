@@ -20,6 +20,10 @@ module Ui
       @snipers.status_text = status
     end
 
+    def sniper_status_changed sniper_state, status_text
+      @snipers.sniper_status_changed sniper_state, status_text
+    end
+
     private
 
     def make_snipers_table

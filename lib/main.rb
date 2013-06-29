@@ -23,9 +23,11 @@ class Main
       @main_window.show_status "Joining"
       auction.join
     end
+    auction_sniper = AuctionSniper.new(auction,
+                                       item_id,
+                                       SniperStateDisplayer.new(main_window))
     @client.register_handler :message,
-      &AuctionMessageTranslator.for(@client.jid.stripped.to_s,
-                                    AuctionSniper.new(auction, SniperStateDisplayer.new(main_window)))
+      &AuctionMessageTranslator.for(@client.jid.stripped.to_s, auction_sniper)
     @client.connect
   end
 

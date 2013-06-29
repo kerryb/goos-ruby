@@ -3,8 +3,8 @@ class SniperStateDisplayer
     @main_window = main_window
   end
 
-  def sniper_bidding
-    show_status "Bidding"
+  def sniper_bidding state
+    EM.next_tick { @main_window.sniper_status_changed state, "Bidding"
   end
 
   def sniper_winning

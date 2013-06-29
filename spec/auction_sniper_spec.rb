@@ -4,8 +4,9 @@ require "support/roles/auction_event_listener"
 require "auction_sniper"
 
 describe AuctionSniper do
-  subject { AuctionSniper.new auction, sniper_listener }
+  subject { AuctionSniper.new auction, item_id, sniper_listener }
   let(:auction) { double :auction, join: true, bid: true }
+  let(:item_id) { "item-123" }
   let(:sniper_listener) { double :sniper_listener }
 
   it_behaves_like "an auction event listener"
@@ -30,7 +31,9 @@ describe AuctionSniper do
     end
 
     it "reports that it is bidding" do
-      expect(sniper_listener).to have_received :sniper_bidding
+      expect(sniper_listener).to have_received(:sniper_bidding).with(
+        SniperState.new(item_id, price, price + increment)
+      )
     end
   end
 
