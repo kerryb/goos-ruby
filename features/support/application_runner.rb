@@ -19,16 +19,16 @@ class ApplicationRunner
     wait_for_status @item_id, last_price, last_bid, "Bidding"
   end
 
-  def winning_auction?
-    wait_for_status "Winning"
+  def winning_auction? winning_bid
+    wait_for_status @item_id, winning_bid, winning_bid, "Winning"
   end
 
-  def has_lost_auction?
-    wait_for_status "Lost"
+  def has_lost_auction? last_price
+    wait_for_status @item_id, last_price, last_price, "Lost"
   end
 
-  def has_won_auction?
-    wait_for_status "Won"
+  def has_won_auction? last_price
+    wait_for_status @item_id, last_price, last_price, "Won"
   end
 
   private

@@ -8,7 +8,7 @@ end
 
 When "I am told that I am the high bidder" do
   auction.report_price 1098, 97, ApplicationRunner::SNIPER_ID
-  expect(sniper).to be_winning_auction
+  expect(sniper).to be_winning_auction(1098)
 end
 
 When "the auction closes" do
