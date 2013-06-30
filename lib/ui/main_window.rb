@@ -31,7 +31,7 @@ module Ui
       view = Gtk::TreeView.new @snipers
       view.name = "snipers"
       renderer = Gtk::CellRendererText.new
-      SnipersTableModel::COLUMNS.each_with_index do |_, index|
+      Column.values.each_with_index do |_, index|
         view.append_column Gtk::TreeViewColumn.new("", renderer, text: index)
       end
       view
