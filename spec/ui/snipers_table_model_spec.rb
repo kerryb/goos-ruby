@@ -1,9 +1,12 @@
+require "support/roles/sniper_listener"
 require "ui/snipers_table_model"
 
 describe SnipersTableModel do
   def value_of_column column
     subject.iter_first[Column.values.find_index column]
   end
+
+  it_behaves_like "a sniper listener"
 
   it "Has enough columns" do
     expect(subject.n_columns).to eq Column.values.size

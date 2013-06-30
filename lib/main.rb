@@ -2,7 +2,7 @@ require "blather/client/client"
 
 require "auction_sniper"
 require "auction_message_translator"
-require "sniper_state_displayer"
+require "ui_thread_sniper_listener"
 require "ui/main_window"
 require "xmpp_auction"
 
@@ -14,14 +14,15 @@ class Main
   end
 
   def initialize id, passsword, item_id
-    @main_window = Ui::MainWindow.new
+    @snipers = SnipersTableModel.new
+    @main_window = Ui::MainWindow.new @snipers
     setup_xmpp_client id, passsword
     start_ui
     auction = XmppAuction.new @client, auction_id_for(item_id)
     @client.register_handler(:ready) { auction.join }
     auction_sniper = AuctionSniper.new(auction,
                                        item_id,
-                                       SniperStateDisplayer.new(main_window))
+                                       UiThreadSniperListener.new(@snipers))
     @client.register_handler :message,
       &AuctionMessageTranslator.for(@client.jid.stripped.to_s, auction_sniper)
     @client.connect

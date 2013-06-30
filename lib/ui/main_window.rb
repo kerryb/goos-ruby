@@ -3,8 +3,9 @@ require "ui/snipers_table_model"
 
 module Ui
   class MainWindow < Gtk::Window
-    def initialize
-      super
+    def initialize sniper_listener
+      super()
+      @sniper_listener = sniper_listener
 
       set_name "main_window"
       set_title  "Auction sniper"
@@ -12,23 +13,22 @@ module Ui
         Gtk.main_quit
       end
 
-      @snipers = SnipersTableModel.new
       add make_snipers_table
       show_all
     end
 
     def show_status status
-      @snipers.status_text = status
+      @sniper_listener.status_text = status
     end
 
     def sniper_state_changed sniper_snapshot
-      @snipers.sniper_state_changed sniper_snapshot
+      @sniper_listener.sniper_state_changed sniper_snapshot
     end
 
     private
 
     def make_snipers_table
-      view = Gtk::TreeView.new @snipers
+      view = Gtk::TreeView.new @sniper_listener
       view.name = "snipers"
       renderer = Gtk::CellRendererText.new
       Column.values.each_with_index do |_, index|
