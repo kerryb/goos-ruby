@@ -22,7 +22,7 @@ describe AuctionSniper do
     let(:increment) { 25 }
 
     before do
-      sniper_listener.stub :sniper_bidding
+      sniper_listener.stub :sniper_state_changed
       subject.current_price price, increment, :from_other_bidder
     end
 
@@ -31,8 +31,8 @@ describe AuctionSniper do
     end
 
     it "reports that it is bidding" do
-      expect(sniper_listener).to have_received(:sniper_bidding).with(
-        SniperSnapshot.new(item_id, price, price + increment)
+      expect(sniper_listener).to have_received(:sniper_state_changed).with(
+        SniperSnapshot.new(item_id, price, price + increment, :bidding)
       )
     end
   end
@@ -44,7 +44,7 @@ describe AuctionSniper do
   end
 
   it "reports that the sniper has lost when the action closes while bidding" do
-    sniper_listener.stub(:sniper_bidding) { @sniper_state = :bidding }
+    sniper_listener.stub(:sniper_state_changed) {|snapshot| @sniper_state = snapshot.sniper_state }
     sniper_listener.stub(:sniper_lost) { expect(@sniper_state).to be :bidding }
 
     subject.current_price 123, 45, :from_other_bidder

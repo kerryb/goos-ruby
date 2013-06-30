@@ -13,7 +13,7 @@ class AuctionSniper
     else
       bid = price + increment
       @auction.bid bid
-      @sniper_listener.sniper_bidding SniperSnapshot.new(@item_id, price, bid)
+      @sniper_listener.sniper_state_changed SniperSnapshot.new(@item_id, price, bid, :bidding)
     end
   end
 

@@ -21,8 +21,8 @@ module Ui
       @snipers.status_text = status
     end
 
-    def sniper_state_changed sniper_snapshot, status_text
-      @snipers.sniper_state_changed sniper_snapshot, status_text
+    def sniper_state_changed sniper_snapshot
+      @snipers.sniper_state_changed sniper_snapshot
     end
 
     private
