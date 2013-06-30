@@ -14,18 +14,18 @@ describe SnipersTableModel do
       expect(value_of_column :item_id).to be_empty
       expect(value_of_column :last_price).to be_zero
       expect(value_of_column :last_bid).to eq be_zero
-      expect(value_of_column :sniper_state).to eq "Joining"
+      expect(value_of_column :sniper_state).to eq SniperState::JOINING.to_s
     end
   end
 
   describe "#sniper_state_changed" do
     it "updates the item ID, last price, last bid and sniper state" do
-      state = SniperSnapshot.new("item-123", 100, 123, :bidding)
+      state = SniperSnapshot.new("item-123", 100, 123, SniperState::BIDDING)
       subject.sniper_state_changed state
       expect(value_of_column :item_id).to eq "item-123"
       expect(value_of_column :last_price).to eq 100
       expect(value_of_column :last_bid).to eq 123
-      expect(value_of_column :sniper_state).to eq SnipersTableModel::SNIPER_STATES[:bidding]
+      expect(value_of_column :sniper_state).to eq SniperState::BIDDING.to_s
     end
   end
 end

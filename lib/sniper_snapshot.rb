@@ -1,17 +1,23 @@
+require "sniper_state"
+
 SniperSnapshot = Struct.new :item_id, :last_price, :last_bid, :sniper_state do
   def self.joining item_id
-    new item_id, 0, 0, :joining
+    new item_id, 0, 0, SniperState::JOINING
   end
 
-  def bidding last_price, last_bid
-    self.class.new item_id, last_price, last_bid, :bidding
+  def bidding new_last_price, new_last_bid
+    self.class.new item_id, new_last_price, new_last_bid, SniperState::BIDDING
   end
 
-  def winning last_price
-    self.class.new item_id, last_price, last_price, :winning
+  def winning new_last_price
+    self.class.new item_id, new_last_price, new_last_price, SniperState::WINNING
+  end
+
+  def closed
+    self.class.new item_id, last_price, last_bid, sniper_state.when_auction_closed
   end
 
   def winning?
-    sniper_state == :winning
+    sniper_state.winning?
   end
 end

@@ -7,15 +7,14 @@ describe AuctionSniper do
   subject { AuctionSniper.new auction, item_id, sniper_listener }
   let(:auction) { double :auction, join: true, bid: true }
   let(:item_id) { "item-123" }
+  let(:price) { 1001 }
+  let(:increment) { 25 }
   let(:sniper_listener) { double :sniper_listener }
 
   it_behaves_like "an auction event listener"
 
 
   context "when a new price arrives" do
-    let(:price) { 1001 }
-    let(:increment) { 25 }
-
     before { sniper_listener.stub :sniper_state_changed }
 
     context "from the sniper" do
@@ -23,7 +22,7 @@ describe AuctionSniper do
 
       it "reports that it's winning" do
         expect(sniper_listener).to have_received(:sniper_state_changed).with(
-          SniperSnapshot.new(item_id, price, price, :winning)
+          SniperSnapshot.new(item_id, price, price, SniperState::WINNING)
         )
       end
     end
@@ -37,35 +36,46 @@ describe AuctionSniper do
 
       it "reports that it's bidding" do
         expect(sniper_listener).to have_received(:sniper_state_changed).with(
-          SniperSnapshot.new(item_id, price, price + increment, :bidding)
+          SniperSnapshot.new(item_id, price, price + increment, SniperState::BIDDING)
         )
       end
     end
   end
 
   it "reports that the sniper has lost when the action closes immediately" do
-    sniper_listener.stub :sniper_lost
+    sniper_listener.stub :sniper_state_changed
     subject.auction_closed
-    expect(sniper_listener).to have_received :sniper_lost
+    expect(sniper_listener).to have_received(:sniper_state_changed).with(
+      SniperSnapshot.new(item_id, 0, 0, SniperState::LOST)
+    )
   end
 
   it "reports that the sniper has lost when the action closes while bidding" do
-    sniper_listener.stub(:sniper_state_changed) {|snapshot| @sniper_state = snapshot.sniper_state }
-    sniper_listener.stub(:sniper_lost) { expect(@sniper_state).to be :bidding }
+    sniper_listener.stub(:sniper_state_changed) do |snapshot|
+      if snapshot.sniper_state == SniperState::WINNING
+        expect(@sniper_state).to be SniperState::BIDDING
+      else
+        @sniper_state = snapshot.sniper_state
+      end
+    end
 
-    subject.current_price 123, 45, :from_other_bidder
+    subject.current_price price, increment, :from_other_bidder
     subject.auction_closed
 
-    expect(sniper_listener).to have_received :sniper_lost
+    expect(sniper_listener).to have_received(:sniper_state_changed).with(
+      SniperSnapshot.new(item_id, price, price + increment, SniperState::LOST)
+    )
   end
 
   it "reports that the sniper has won when the action closes while winning" do
     sniper_listener.stub(:sniper_state_changed) {|snapshot| @sniper_state = snapshot.sniper_state }
-    sniper_listener.stub(:sniper_won) { expect(@sniper_state).to be :winning }
+    sniper_listener.stub(:sniper_won) { expect(@sniper_state).to be SniperState::WINNING }
 
-    subject.current_price 123, 45, :from_sniper
+    subject.current_price price, increment, :from_sniper
     subject.auction_closed
 
-    expect(sniper_listener).to have_received :sniper_won
+    expect(sniper_listener).to have_received(:sniper_state_changed).with(
+      SniperSnapshot.new(item_id, price, price, SniperState::WON)
+    )
   end
 end
