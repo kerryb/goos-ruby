@@ -9,9 +9,9 @@ Then "I should place a higher bid" do
 end
 
 Then "I should have lost the auction" do
-  expect(sniper).to have_lost_auction(1000)
+  expect(sniper).to have_lost_auction
 end
 
 Then "I should have won the auction" do
-  expect(sniper).to have_won_auction(1098)
+  expect(sniper).to have_won_auction
 end
