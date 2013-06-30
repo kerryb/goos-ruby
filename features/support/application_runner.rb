@@ -48,21 +48,22 @@ class ApplicationRunner
   end
 
   def wait_for_window_title title
-    Timeout.timeout 2 do
-      sleep 0.01 until window.title == title
-      return true
-    end
-  rescue Timeout::Error
-    fail %{Expected window title to be "#{title}", but was "#{window.title}"}
+    wait_for { window.title == title } or fail(
+      %{Expected window title to be "#{title}", but was "#{window.title}"})
   end
 
   def wait_for_status *columns
+    wait_for { displayed_columns == columns } or fail(
+      %{Expected displayed columns to be #{columns.inspect}, but were #{displayed_columns.inspect}})
+  end
+
+  def wait_for
     Timeout.timeout 2 do
-      sleep 0.01 until displayed_columns == columns
+      sleep 0.01 until yield
       return true
     end
   rescue Timeout::Error
-    fail %{Expected displayed columns to be #{columns.inspect}, but were #{displayed_columns.inspect}}
+    false
   end
 
   def displayed_columns
