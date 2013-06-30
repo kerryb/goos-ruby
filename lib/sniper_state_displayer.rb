@@ -7,10 +7,6 @@ class SniperStateDisplayer
     EM.next_tick { @main_window.sniper_state_changed state }
   end
 
-  def sniper_winning
-    show_status "Winning"
-  end
-
   def sniper_won
     show_status "Won"
   end
