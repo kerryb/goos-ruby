@@ -101,6 +101,10 @@ GEM
     rubinius-actor (0.0.2)
       rubinius-core-api
     rubinius-core-api (0.0.1)
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
     slop (3.4.5)
     thor (0.18.1)
     vines (0.4.6)
@@ -125,4 +129,5 @@ DEPENDENCIES
   guard-rspec
   rake
   rspec (~> 2.14.0.rc1)
+  simplecov
   vines

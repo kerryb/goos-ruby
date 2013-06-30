@@ -4,3 +4,4 @@ pid
 .bundle
 bin
 tmp
+coverage
