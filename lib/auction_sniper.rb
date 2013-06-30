@@ -9,7 +9,7 @@ class AuctionSniper
   def current_price price, increment, price_source
     @is_winning = price_source == :from_sniper
     if @is_winning
-      @sniper_listener.sniper_winning
+      @sniper_listener.sniper_state_changed SniperSnapshot.new(@item_id, price, price, :winning)
     else
       bid = price + increment
       @auction.bid bid
