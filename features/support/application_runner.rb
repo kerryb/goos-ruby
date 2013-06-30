@@ -10,6 +10,7 @@ class ApplicationRunner
 		@last_bid = 0
     @application = Main.main SNIPER_ID, SNIPER_PASSWORD, @item_id
     wait_for_app_to_start
+    wait_for_window_title Ui::MainWindow::APPLICATION_TITLE
     wait_for_status "", @last_price, @last_bid, SniperState::JOINING.to_s
   end
 
@@ -46,13 +47,22 @@ class ApplicationRunner
     end
   end
 
+  def wait_for_window_title title
+    Timeout.timeout 2 do
+      sleep 0.01 until window.title == title
+      return true
+    end
+  rescue Timeout::Error
+    fail %{Expected window title to be "#{title}", but was "#{window.title}"}
+  end
+
   def wait_for_status *columns
     Timeout.timeout 2 do
       sleep 0.01 until displayed_columns == columns
       return true
     end
   rescue Timeout::Error
-    fail %{Expected displayed status to be "#{columns}", but was #{displayed_columns}}
+    fail %{Expected displayed columns to be #{columns.inspect}, but were #{displayed_columns.inspect}}
   end
 
   def displayed_columns

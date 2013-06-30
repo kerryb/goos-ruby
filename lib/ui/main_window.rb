@@ -3,12 +3,14 @@ require "ui/snipers_table_model"
 
 module Ui
   class MainWindow < Gtk::Window
+    APPLICATION_TITLE = "Auction sniper"
+
     def initialize sniper_listener
       super()
       @sniper_listener = sniper_listener
 
       set_name "main_window"
-      set_title  "Auction sniper"
+      set_title APPLICATION_TITLE
       signal_connect "destroy" do
         Gtk.main_quit
       end
