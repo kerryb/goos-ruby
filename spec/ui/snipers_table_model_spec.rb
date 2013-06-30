@@ -21,7 +21,7 @@ describe SnipersTableModel do
   describe "#sniper_state_changed" do
     it "updates the item ID, last price, last bid and sniper status" do
       state = SniperSnapshot.new("item-123", 100, 123)
-      subject.sniper_status_changed state, "Bidding"
+      subject.sniper_state_changed state, "Bidding"
       expect(value_of_column :item_id).to eq "item-123"
       expect(value_of_column :last_price).to eq 100
       expect(value_of_column :last_bid).to eq 123
