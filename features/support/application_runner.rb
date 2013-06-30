@@ -10,7 +10,7 @@ class ApplicationRunner
 		@last_bid = 0
     @application = Main.main SNIPER_ID, SNIPER_PASSWORD, @item_id
     wait_for_app_to_start
-    wait_for_status "", @last_price, @last_bid, "Joining"
+    wait_for_status "", @last_price, @last_bid, SniperState::JOINING.to_s
   end
 
   def stop
@@ -19,19 +19,19 @@ class ApplicationRunner
 
   def bidding? last_price, last_bid
 		@last_price, @last_bid = last_price, last_bid
-    wait_for_status @item_id, @last_price, @last_bid, "Bidding"
+    wait_for_status @item_id, @last_price, @last_bid, SniperState::BIDDING.to_s
   end
 
   def winning_auction?
-    wait_for_status @item_id, @last_bid, @last_bid, "Winning"
+    wait_for_status @item_id, @last_bid, @last_bid, SniperState::WINNING.to_s
   end
 
   def has_lost_auction?
-    wait_for_status @item_id, @last_price, @last_bid, "Lost"
+    wait_for_status @item_id, @last_price, @last_bid, SniperState::LOST.to_s
   end
 
   def has_won_auction?
-    wait_for_status @item_id, @last_bid, @last_bid, "Won"
+    wait_for_status @item_id, @last_bid, @last_bid, SniperState::WON.to_s
   end
 
   private
