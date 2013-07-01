@@ -2,14 +2,9 @@ require "column"
 
 describe Column do
   let(:snapshot) {
-    double(:snapshot, item_id: item_id, last_price: last_price,
-           last_bid: last_bid, sniper_state: sniper_state)
+    double(:snapshot, item_id: "item-123", last_price: 100,
+           last_bid: 110, sniper_state: double(to_s: "Joining"))
   }
-  let(:item_id) { "item-123" }
-  let(:last_price) { 100 }
-  let(:last_bid) { 120 }
-  let(:sniper_state) { double :sniper_state, to_s: sniper_state_string }
-  let(:sniper_state_string) { "Joining" }
 
   specify "#values returns all values" do
     expect(Column.values).to eq [Column::ITEM_IDENTIFIER,
@@ -18,43 +13,20 @@ describe Column do
                                  Column::SNIPER_STATE]
   end
 
-  describe "::ITEM_IDENTIFIER" do
-    subject { Column::ITEM_IDENTIFIER }
+  [
+    ["ITEM_IDENTIFIER", "Item", "item_id"],
+    ["LAST_PRICE", "Last price", "last_price"],
+    ["LAST_BID", "Last bid", "last_bid"],
+    ["SNIPER_STATE", "State", "sniper_state.to_s"],
+  ].each do |(column, title, field)|
+    describe column do
+      subject { Column.const_get column }
 
-    its(:title) { should eq "Item" }
+      its(:title) { should eq title }
 
-    it "returns the sniper snapshot value in item_id" do
-      expect(subject.value_in snapshot).to be item_id
-    end
-  end
-
-  describe "::LAST_PRICE" do
-    subject { Column::LAST_PRICE }
-
-    its(:title) { should eq "Last price" }
-
-    it "returns the sniper snapshot value in last_price" do
-      expect(subject.value_in snapshot).to be last_price
-    end
-  end
-
-  describe "::LAST_BID" do
-    subject { Column::LAST_BID }
-
-    its(:title) { should eq "Last bid" }
-
-    it "returns the sniper snapshot value in last_bid" do
-      expect(subject.value_in snapshot).to be last_bid
-    end
-  end
-
-  describe "::SNIPER_STATE" do
-    subject { Column::SNIPER_STATE }
-
-    its(:title) { should eq "State" }
-
-    it "returns the sniper snapshot value in sniper_state, converted to a string" do
-      expect(subject.value_in snapshot).to be sniper_state_string
+      it "returns the sniper snapshot value in #{field}" do
+        expect(subject.value_in snapshot).to be snapshot.instance_eval(field)
+      end
     end
   end
 end
