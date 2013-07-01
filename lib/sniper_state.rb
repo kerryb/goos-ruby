@@ -1,44 +1,29 @@
 require "defect"
 
-class SniperState
-  def initialize name
-    @name = name
-  end
-
-  JOINING = new "Joining"
-  def JOINING.when_auction_closed
-    LOST
-  end
-
-  BIDDING = new "Bidding"
-  def BIDDING.when_auction_closed
-    LOST
-  end
-
-  WINNING = new "Winning"
-  def WINNING.winning?
-    true
-  end
-  def WINNING.when_auction_closed
-    WON
-  end
-
+class SniperState < Struct.new(:name, :winning, :new_state_when_auction_closed)
+  JOINING = new "Joining", true, :LOST
+  BIDDING = new "Bidding", false, :LOST
+  WINNING = new "Winning", false, :WON
   LOST = new "Lost"
   WON = new "Won"
 
   def to_s
-    @name
+    name
   end
 
   def inspect
-    "<SniperState: #{@name}>"
+    "<SniperState: #{name}>"
   end
 
   def winning?
-    false
+    winning
   end
 
   def when_auction_closed
-    raise Defect.new("Auction is already closed")
+    if new_state_when_auction_closed
+      SniperState.const_get new_state_when_auction_closed
+    else
+      raise Defect.new("Auction is already closed")
+    end
   end
 end

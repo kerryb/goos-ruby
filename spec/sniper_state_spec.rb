@@ -1,7 +1,6 @@
 require "sniper_state"
 
 describe SniperState do
-
   describe "::JOINING" do
     subject { SniperState::JOINING }
     specify "translates as 'Joining'" do
