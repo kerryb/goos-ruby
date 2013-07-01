@@ -76,6 +76,11 @@ RSpec doesn't have the "states" feature from JMock, but it's easy enough to
 replicate by executing a block when the stubbed methods are called, and setting
 or checking an instance variable as appropriate.
 
+### Enums
+
+There are no enums in Ruby, so classes like `Column` and `SniperState` are
+implemented as (rather inelegant) collections of constants.
+
 ### Bugs
 
 There seems to be a race condition on startup -- every so often a feature will
