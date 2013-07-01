@@ -20,6 +20,9 @@ describe Column do
 
   describe "::ITEM_IDENTIFIER" do
     subject { Column::ITEM_IDENTIFIER }
+
+    its(:title) { should eq "Item" }
+
     it "returns the sniper snapshot value in item_id" do
       expect(subject.value_in snapshot).to be item_id
     end
@@ -27,6 +30,9 @@ describe Column do
 
   describe "::LAST_PRICE" do
     subject { Column::LAST_PRICE }
+
+    its(:title) { should eq "Last price" }
+
     it "returns the sniper snapshot value in last_price" do
       expect(subject.value_in snapshot).to be last_price
     end
@@ -34,6 +40,9 @@ describe Column do
 
   describe "::LAST_BID" do
     subject { Column::LAST_BID }
+
+    its(:title) { should eq "Last bid" }
+
     it "returns the sniper snapshot value in last_bid" do
       expect(subject.value_in snapshot).to be last_bid
     end
@@ -41,6 +50,9 @@ describe Column do
 
   describe "::SNIPER_STATE" do
     subject { Column::SNIPER_STATE }
+
+    its(:title) { should eq "State" }
+
     it "returns the sniper snapshot value in sniper_state, converted to a string" do
       expect(subject.value_in snapshot).to be sniper_state_string
     end

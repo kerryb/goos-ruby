@@ -1,9 +1,11 @@
 require "defect"
 
-class SniperState < Struct.new(:name, :winning, :new_state_when_auction_closed)
-  JOINING = new "Joining", true, :LOST
+SniperState = Struct.new :name, :winning, :new_state_when_auction_closed
+
+class SniperState
+  JOINING = new "Joining", false, :LOST
   BIDDING = new "Bidding", false, :LOST
-  WINNING = new "Winning", false, :WON
+  WINNING = new "Winning", true, :WON
   LOST = new "Lost"
   WON = new "Won"
 
