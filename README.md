@@ -9,6 +9,7 @@ end of each chapter:
 * [Chapter 12](https://github.com/kerryb/goos-ruby/tree/chapter-12)
 * [Chapter 13](https://github.com/kerryb/goos-ruby/tree/chapter-13)
 * [Chapter 14](https://github.com/kerryb/goos-ruby/tree/chapter-14)
+* [Chapter 15](https://github.com/kerryb/goos-ruby/tree/chapter-15)
 
 ## Tools
 
