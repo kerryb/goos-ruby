@@ -5,10 +5,9 @@ class ApplicationRunner
   SNIPER_PASSWORD = "sniper"
 
   def start_bidding_in auction
-    @item_id = auction.item_id
 		@last_price = 0
 		@last_bid = 0
-    @application = Main.main SNIPER_ID, SNIPER_PASSWORD, @item_id
+    @application = Main.main SNIPER_ID, SNIPER_PASSWORD, auction.item_id
     wait_for_app_to_start
     wait_for_window_title Ui::MainWindow::APPLICATION_TITLE
     wait_for_column_headers "Item", "Last price", "Last bid", "State"
@@ -19,21 +18,21 @@ class ApplicationRunner
     @application.stop
   end
 
-  def bidding? last_price, last_bid
+  def bidding? auction, last_price, last_bid
 		@last_price, @last_bid = last_price, last_bid
-    wait_for_status @item_id, @last_price, @last_bid, SniperState::BIDDING.to_s
+    wait_for_status auction.item_id, @last_price, @last_bid, SniperState::BIDDING.to_s
   end
 
-  def winning_auction?
-    wait_for_status @item_id, @last_bid, @last_bid, SniperState::WINNING.to_s
+  def winning_auction? auction
+    wait_for_status auction.item_id, @last_bid, @last_bid, SniperState::WINNING.to_s
   end
 
-  def has_lost_auction?
-    wait_for_status @item_id, @last_price, @last_bid, SniperState::LOST.to_s
+  def has_lost_auction? auction
+    wait_for_status auction.item_id, @last_price, @last_bid, SniperState::LOST.to_s
   end
 
-  def has_won_auction?
-    wait_for_status @item_id, @last_bid, @last_bid, SniperState::WON.to_s
+  def has_won_auction? auction
+    wait_for_status auction.item_id, @last_bid, @last_bid, SniperState::WON.to_s
   end
 
   private

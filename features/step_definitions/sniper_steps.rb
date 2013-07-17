@@ -4,14 +4,14 @@ When "I start bidding in the auction" do
 end
 
 Then "I should place a higher bid" do
-  expect(sniper).to be_bidding(1000, 1098)
+  expect(sniper).to be_bidding auction, 1000, 1098
   auction.wait_for_sniper_to_bid 1098, ApplicationRunner::SNIPER_ID
 end
 
 Then "I should have lost the auction" do
-  expect(sniper).to have_lost_auction
+  expect(sniper).to have_lost_auction auction
 end
 
 Then "I should have won the auction" do
-  expect(sniper).to have_won_auction
+  expect(sniper).to have_won_auction auction
 end
