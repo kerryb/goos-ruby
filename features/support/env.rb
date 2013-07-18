@@ -1,1 +1,2 @@
 require "simplecov"
+require "debugger"

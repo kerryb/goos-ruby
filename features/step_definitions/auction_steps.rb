@@ -2,6 +2,11 @@ Given "an auction of an item is in progress" do
   start_auction_for_item("item-54321")
 end
 
+Given "auctions of two items are in progress" do
+  start_auction_for_item("item-54321")
+  start_auction_for_item("item-65432")
+end
+
 When "I am told the current price, bid increment and high bidder" do
   auction.report_price 1000, 98, "other bidder"
 end

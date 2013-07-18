@@ -24,3 +24,9 @@ Feature: End-to-end test
     When I am told that I am the high bidder
     And the auction closes
     Then I should have won the auction
+
+  @wip
+  Scenario: Bid for multiple items
+    Given auctions of two items are in progress
+    When I bid in both auctions
+    Then I should win both items

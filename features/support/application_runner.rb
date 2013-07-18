@@ -3,15 +3,18 @@ require "main"
 class ApplicationRunner
   SNIPER_ID = "sniper@localhost"
   SNIPER_PASSWORD = "sniper"
+  AuctionState = Struct.new :last_price, :last_bid
 
-  def start_bidding_in auction
-		@last_price = 0
-		@last_bid = 0
+  def start_bidding_in *auctions
+    @auction_states = Hash[*(auctions.flat_map {|a| [a, AuctionState.new(0, 0)] })]
+
+    # Currently ignores all but first auction!
+    auction = auctions.first
     @application = Main.main SNIPER_ID, SNIPER_PASSWORD, auction.item_id
     wait_for_app_to_start
     wait_for_window_title Ui::MainWindow::APPLICATION_TITLE
     wait_for_column_headers "Item", "Last price", "Last bid", "State"
-    wait_for_status "", @last_price, @last_bid, SniperState::JOINING.to_s
+    wait_for_status "", 0, 0, SniperState::JOINING.to_s
   end
 
   def stop
@@ -19,20 +22,32 @@ class ApplicationRunner
   end
 
   def bidding? auction, last_price, last_bid
-		@last_price, @last_bid = last_price, last_bid
-    wait_for_status auction.item_id, @last_price, @last_bid, SniperState::BIDDING.to_s
+    @auction_states[auction] = AuctionState.new last_price, last_bid
+    wait_for_status(auction.item_id,
+                    last_price,
+                    last_bid,
+                    SniperState::BIDDING.to_s)
   end
 
   def winning_auction? auction
-    wait_for_status auction.item_id, @last_bid, @last_bid, SniperState::WINNING.to_s
+    wait_for_status(auction.item_id,
+                    @auction_states[auction].last_bid,
+                    @auction_states[auction].last_bid,
+                    SniperState::WINNING.to_s)
   end
 
   def has_lost_auction? auction
-    wait_for_status auction.item_id, @last_price, @last_bid, SniperState::LOST.to_s
+    wait_for_status(auction.item_id,
+                    @auction_states[auction].last_price,
+                    @auction_states[auction].last_bid,
+                    SniperState::LOST.to_s)
   end
 
   def has_won_auction? auction
-    wait_for_status auction.item_id, @last_bid, @last_bid, SniperState::WON.to_s
+    wait_for_status(auction.item_id,
+                    @auction_states[auction].last_bid,
+                    @auction_states[auction].last_bid,
+                    SniperState::WON.to_s)
   end
 
   private
