@@ -14,7 +14,7 @@ class Main
   end
 
   def initialize id, passsword, item_id
-    @snipers = SnipersTableModel.new
+    @snipers = SnipersTableModel.new item_id
     @main_window = Ui::MainWindow.new @snipers
     setup_xmpp_client id, passsword
     start_ui
