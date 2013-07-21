@@ -19,14 +19,7 @@ class Main
     client = setup_xmpp_client id, passsword
     start_ui
     item_ids.each do |item_id|
-      auction = XmppAuction.new client, auction_id_for(item_id)
-      client.register_handler(:ready) { auction.join }
-      auction_sniper = AuctionSniper.new(auction,
-                                         item_id,
-                                         UiThreadSniperListener.new(@snipers))
-      client.register_handler :message,
-        &AuctionMessageTranslator.for(client.jid.stripped.to_s, auction_sniper)
-      client.connect
+      join_auction client, item_id
     end
   end
 
@@ -35,6 +28,17 @@ class Main
   end
 
   private
+
+  def join_auction client, item_id
+    auction = XmppAuction.new client, auction_id_for(item_id)
+    client.register_handler(:ready) { auction.join }
+    auction_sniper = AuctionSniper.new(auction,
+                                       item_id,
+                                       UiThreadSniperListener.new(@snipers))
+    client.register_handler :message,
+      &AuctionMessageTranslator.for(client.jid.stripped.to_s, auction_sniper)
+    client.connect
+  end
 
   def auction_id_for item_id
     "auction-#{item_id}@localhost"
