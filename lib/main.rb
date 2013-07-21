@@ -13,19 +13,21 @@ class Main
     alias main new
   end
 
-  def initialize id, passsword, item_id
+  def initialize id, passsword, *item_ids
     @snipers = SnipersTableModel.new
     @main_window = Ui::MainWindow.new @snipers
     setup_xmpp_client id, passsword
     start_ui
-    auction = XmppAuction.new @client, auction_id_for(item_id)
-    @client.register_handler(:ready) { auction.join }
-    auction_sniper = AuctionSniper.new(auction,
-                                       item_id,
-                                       UiThreadSniperListener.new(@snipers))
-    @client.register_handler :message,
-      &AuctionMessageTranslator.for(@client.jid.stripped.to_s, auction_sniper)
-    @client.connect
+    item_ids.each do |item_id|
+      auction = XmppAuction.new @client, auction_id_for(item_id)
+      @client.register_handler(:ready) { auction.join }
+      auction_sniper = AuctionSniper.new(auction,
+                                         item_id,
+                                         UiThreadSniperListener.new(@snipers))
+      @client.register_handler :message,
+        &AuctionMessageTranslator.for(@client.jid.stripped.to_s, auction_sniper)
+      @client.connect
+    end
   end
 
   def stop
