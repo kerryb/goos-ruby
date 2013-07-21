@@ -16,17 +16,17 @@ class Main
   def initialize id, passsword, *item_ids
     @snipers = SnipersTableModel.new
     @main_window = Ui::MainWindow.new @snipers
-    setup_xmpp_client id, passsword
+    client = setup_xmpp_client id, passsword
     start_ui
     item_ids.each do |item_id|
-      auction = XmppAuction.new @client, auction_id_for(item_id)
-      @client.register_handler(:ready) { auction.join }
+      auction = XmppAuction.new client, auction_id_for(item_id)
+      client.register_handler(:ready) { auction.join }
       auction_sniper = AuctionSniper.new(auction,
                                          item_id,
                                          UiThreadSniperListener.new(@snipers))
-      @client.register_handler :message,
-        &AuctionMessageTranslator.for(@client.jid.stripped.to_s, auction_sniper)
-      @client.connect
+      client.register_handler :message,
+        &AuctionMessageTranslator.for(client.jid.stripped.to_s, auction_sniper)
+      client.connect
     end
   end
 
@@ -41,7 +41,7 @@ class Main
   end
 
   def setup_xmpp_client id, passsword
-    @client = Blather::Client.setup id, passsword
+    Blather::Client.setup id, passsword
   end
 
   # Blocks main thread
