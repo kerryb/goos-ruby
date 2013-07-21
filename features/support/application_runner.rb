@@ -15,7 +15,7 @@ class ApplicationRunner
 
     auctions.each do |auction|
       #TODO Should see item ID in each row
-      wait_for_status "", 0, 0, SniperState::JOINING.to_s
+      wait_for_displayed_row "", 0, 0, SniperState::JOINING.to_s
     end
   end
 
@@ -25,31 +25,31 @@ class ApplicationRunner
 
   def bidding? auction, last_price, last_bid
     @auction_states[auction] = AuctionState.new last_price, last_bid
-    wait_for_status(auction.item_id,
-                    last_price,
-                    last_bid,
-                    SniperState::BIDDING.to_s)
+    wait_for_displayed_row(auction.item_id,
+                           last_price,
+                           last_bid,
+                           SniperState::BIDDING.to_s)
   end
 
   def winning_auction? auction
-    wait_for_status(auction.item_id,
-                    @auction_states[auction].last_bid,
-                    @auction_states[auction].last_bid,
-                    SniperState::WINNING.to_s)
+    wait_for_displayed_row(auction.item_id,
+                           @auction_states[auction].last_bid,
+                           @auction_states[auction].last_bid,
+                           SniperState::WINNING.to_s)
   end
 
   def has_lost_auction? auction
-    wait_for_status(auction.item_id,
-                    @auction_states[auction].last_price,
-                    @auction_states[auction].last_bid,
-                    SniperState::LOST.to_s)
+    wait_for_displayed_row(auction.item_id,
+                           @auction_states[auction].last_price,
+                           @auction_states[auction].last_bid,
+                           SniperState::LOST.to_s)
   end
 
   def has_won_auction? auction
-    wait_for_status(auction.item_id,
-                    @auction_states[auction].last_bid,
-                    @auction_states[auction].last_bid,
-                    SniperState::WON.to_s)
+    wait_for_displayed_row(auction.item_id,
+                           @auction_states[auction].last_bid,
+                           @auction_states[auction].last_bid,
+                           SniperState::WON.to_s)
   end
 
   private
@@ -74,9 +74,9 @@ class ApplicationRunner
       %{Expected displayed headers to be #{headers.inspect}, but were #{displayed_headers.inspect}})
   end
 
-  def wait_for_status *columns
-    wait_for { displayed_columns == columns } or fail(
-      %{Expected displayed columns to be #{columns.inspect}, but were #{displayed_columns.inspect}})
+  def wait_for_displayed_row *expected_values
+    wait_for { displayed_rows.include? expected_values } or fail(
+      %{Expected a row containing #{expected_values.inspect}, but table contained #{displayed_rows.inspect}})
   end
 
   def wait_for
@@ -88,8 +88,13 @@ class ApplicationRunner
     false
   end
 
-  def displayed_columns
-    window.child.model.n_columns.times.map {|n| window.child.model.iter_first[n]}
+  def displayed_rows
+    table_model = window.child.model
+    rows = []
+    table_model.each do |_model, _path, iterator|
+      rows << table_model.n_columns.times.map {|n| iterator[n]}
+    end
+    rows
   end
 
   def displayed_headers
