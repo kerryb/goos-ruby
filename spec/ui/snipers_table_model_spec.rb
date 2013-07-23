@@ -6,10 +6,10 @@ describe SnipersTableModel do
     rows = []
     subject.each do |_model, _path, iter|
       rows << [
-        iter[Column.values.find_index Column::ITEM_IDENTIFIER],
-        iter[Column.values.find_index Column::LAST_PRICE],
-        iter[Column.values.find_index Column::LAST_BID],
-        iter[Column.values.find_index Column::SNIPER_STATE],
+        iter[Column::ITEM_IDENTIFIER.index],
+        iter[Column::LAST_PRICE.index],
+        iter[Column::LAST_BID.index],
+        iter[Column::SNIPER_STATE.index],
       ]
     end
     rows

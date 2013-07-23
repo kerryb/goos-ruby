@@ -6,6 +6,13 @@ describe Column do
            last_bid: 110, sniper_state: double(to_s: "Joining"))
   }
 
+  [Column::ITEM_IDENTIFIER, Column::LAST_PRICE,
+   Column::LAST_BID, Column::SNIPER_STATE].each_with_index do |column, index|
+    specify "The '#{column.title} column has an index of {index}" do
+      expect(column.index).to eq index
+    end
+  end
+
   specify "#values returns all values" do
     expect(Column.values).to eq [Column::ITEM_IDENTIFIER,
                                  Column::LAST_PRICE,
