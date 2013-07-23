@@ -30,6 +30,7 @@ class Main
   private
 
   def join_auction client, item_id
+    safely_add_item_to_model item_id
     auction = XmppAuction.new client, auction_id_for(item_id)
     client.register_handler(:ready) { auction.join }
     auction_sniper = AuctionSniper.new(auction,
@@ -38,6 +39,10 @@ class Main
     client.register_handler :message,
       &AuctionMessageTranslator.for(client.jid.stripped.to_s, auction_sniper)
     client.connect
+  end
+
+  def safely_add_item_to_model item_id
+    EM.next_tick { @snipers.add_sniper SniperSnapshot.joining(item_id) }
   end
 
   def auction_id_for item_id

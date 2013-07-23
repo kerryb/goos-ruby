@@ -2,8 +2,17 @@ require "support/roles/sniper_listener"
 require "ui/snipers_table_model"
 
 describe SnipersTableModel do
-  def value_of_column column
-    subject.iter_first[Column.values.find_index column]
+  def rows
+    rows = []
+    subject.each do |_model, _path, iter|
+      rows << [
+        iter[Column.values.find_index Column::ITEM_IDENTIFIER],
+        iter[Column.values.find_index Column::LAST_PRICE],
+        iter[Column.values.find_index Column::LAST_BID],
+        iter[Column.values.find_index Column::SNIPER_STATE],
+      ]
+    end
+    rows
   end
 
   it_behaves_like "a sniper listener"
@@ -13,22 +22,33 @@ describe SnipersTableModel do
   end
 
   context "initially" do
-    it "sets a blank item ID, zero last price and last bid, and sniper status 'Joining'" do
-      expect(value_of_column Column::ITEM_IDENTIFIER).to be_empty
-      expect(value_of_column Column::LAST_PRICE).to be_zero
-      expect(value_of_column Column::LAST_BID).to eq be_zero
-      expect(value_of_column Column::SNIPER_STATE).to eq SniperState::JOINING.to_s
+    it "does not have any rows" do
+      expect(subject.iter_first).to be_false
+    end
+  end
+
+  describe "#add_sniper" do
+    it "sets the item ID, last price, last bid and sniper status" do
+      subject.add_sniper SniperSnapshot.joining("item-123")
+      expect(rows).to eq [["item-123", 0, 0, SniperState::JOINING.to_s]]
     end
   end
 
   describe "#sniper_state_changed" do
-    it "updates the item ID, last price, last bid and sniper state" do
-      state = SniperSnapshot.new("item-123", 100, 123, SniperState::BIDDING)
+    before do
+      subject.add_sniper SniperSnapshot.joining("item-123")
+      subject.add_sniper SniperSnapshot.joining("item-456")
+      subject.add_sniper SniperSnapshot.joining("item-789")
+    end
+
+    it "updates the values in the correct row" do
+      state = SniperSnapshot.new("item-456", 100, 123, SniperState::BIDDING)
       subject.sniper_state_changed state
-      expect(value_of_column Column::ITEM_IDENTIFIER).to eq "item-123"
-      expect(value_of_column Column::LAST_PRICE).to eq 100
-      expect(value_of_column Column::LAST_BID).to eq 123
-      expect(value_of_column Column::SNIPER_STATE).to eq SniperState::BIDDING.to_s
+      expect(rows).to eq [
+        ["item-123", 0, 0, SniperState::JOINING.to_s],
+        ["item-456", 100, 123, SniperState::BIDDING.to_s],
+        ["item-789", 0, 0, SniperState::JOINING.to_s],
+        ]
     end
   end
 end

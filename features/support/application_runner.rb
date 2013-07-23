@@ -14,8 +14,7 @@ class ApplicationRunner
     wait_for_column_headers "Item", "Last price", "Last bid", "State"
 
     auctions.each do |auction|
-      #TODO Should see item ID in each row
-      wait_for_displayed_row "", 0, 0, SniperState::JOINING.to_s
+      wait_for_displayed_row auction.item_id, 0, 0, SniperState::JOINING.to_s
     end
   end
 
