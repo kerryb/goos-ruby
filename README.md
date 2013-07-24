@@ -71,6 +71,11 @@ the Smack XMPP client API. The
 is implemented using blocks, so my `AuctionMessageTranslator.for` method
 returns a lambda, which can be registered as an event handler.
 
+Also, unlike Smack, Blather works at the individual message level, rather than
+modelling persistent chats. To ensure messages only get sent to the appropriate
+listener for each auction, I've added a guard on the message originator when
+registering the listener.
+
 ### Checking state with doubles in specs
 
 RSpec doesn't have the "states" feature from JMock, but it's easy enough to

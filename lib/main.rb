@@ -37,6 +37,7 @@ class Main
                                        item_id,
                                        UiThreadSniperListener.new(@snipers))
     client.register_handler :message,
+      ->(message) { message.from.node == "auction-#{item_id}" },
       &AuctionMessageTranslator.for(client.jid.stripped.to_s, auction_sniper)
     client.connect
   end

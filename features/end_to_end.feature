@@ -25,7 +25,6 @@ Feature: End-to-end test
     And the auction closes
     Then I should have won the auction
 
-  @wip
   Scenario: Bid for multiple items
     Given auctions of two items are in progress
     When I bid in both auctions
