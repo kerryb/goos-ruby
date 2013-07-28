@@ -2,9 +2,12 @@ $:.unshift "lib"
 require "main"
 require "cucumber"
 require "cucumber/rake/task"
-require 'rspec/core/rake_task'
+require "rspec/core/rake_task"
+require "rake/clean"
 
-task :default => [:spec, :"cucumber:ok", :"cucumber:wip", :success]
+CLEAN.include "log/*log", "vines/log/*log", "coverage"
+
+task :default => [:clean, :spec, :"cucumber:ok", :"cucumber:wip", :success]
 
 RSpec::Core::RakeTask.new :spec
 
