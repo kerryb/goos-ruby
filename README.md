@@ -65,16 +65,15 @@ methods.
 
 ### AuctionMessageTranslator
 
-In the book, this implements the `MessageListener` interface, which is part of
-the Smack XMPP client API. The
-[equivalent behaviour in Blather](http://rubydoc.info/github/sprsquish/blather/Blather/Client#register_handler-instance_method)
-is implemented using blocks, so my `AuctionMessageTranslator.for` method
-returns a lambda, which can be registered as an event handler.
-
-Also, unlike Smack, Blather works at the individual message level, rather than
+Unlike Smack, Blather works at the individual message level, rather than
 modelling persistent chats. To ensure messages only get sent to the appropriate
 listener for each auction, I've added a guard on the message originator when
 registering the listener.
+
+Also, for some reason that I've spent far too long failing to get to the bottom
+of, listeners are getting two copies of each message. For now I've added a
+fairly unpleasant hack where a message is ignored if its body is the same as
+the previous one.
 
 ### Checking state with doubles in specs
 

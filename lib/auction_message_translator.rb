@@ -1,14 +1,18 @@
-module AuctionMessageTranslator
-  def self.for sniper_id, listener
-    ->(message) {
-      event = AuctionEvent.from message
-      case event.type
-      when "PRICE"
-        listener.current_price event.current_price, event.increment, event.is_from?(sniper_id)
-      when "CLOSE"
-        listener.auction_closed
-      end
-    }
+class AuctionMessageTranslator
+  def initialize sniper_id, listener
+    @sniper_id, @listener = sniper_id, listener
+  end
+
+  def handle_message message
+    return if message.body == @last_message_body
+    @last_message_body = message.body
+    event = AuctionEvent.from message
+    case event.type
+    when "PRICE"
+      @listener.current_price event.current_price, event.increment, event.is_from?(@sniper_id)
+    when "CLOSE"
+      @listener.auction_closed
+    end
   end
 
   class AuctionEvent
