@@ -6,7 +6,7 @@
 Vines::Config.configure do
   # Set the logging level to debug, info, warn, error, or fatal. The debug
   # level logs all XML sent and received by the server.
-  log :info
+  log :debug
 
   # Each host element below is a virtual host domain name that this server will
   # service. Hosts can share storage configurations or use separate databases.
