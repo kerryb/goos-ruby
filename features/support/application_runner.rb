@@ -88,12 +88,25 @@ class ApplicationRunner
   end
 
   def displayed_rows
-    table_model = window.child.model
+    table_model = snipers_table.model
     rows = []
     table_model.each do |_model, _path, iterator|
       rows << table_model.n_columns.times.map {|n| iterator[n]}
     end
     rows
+  end
+
+  def snipers_table
+    element_with_name "snipers"
+  end
+
+  def element_with_name name
+    element_and_children(window).flatten.find {|elem| elem.name == name }
+  end
+
+  def element_and_children element
+    return [element] unless element.respond_to? :children
+    [element] + element.children.map {|w| element_and_children w }
   end
 
   def displayed_headers
