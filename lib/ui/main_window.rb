@@ -4,12 +4,16 @@ require "ui/snipers_table_model"
 module Ui
   class MainWindow < Gtk::Window
     APPLICATION_TITLE = "Auction sniper"
+    MAIN_WINDOW_NAME = "main_window"
+    NEW_ITEM_ID_NAME = "new_item_id"
+    JOIN_BUTTON_NAME = "join"
+    SNIPERS_TABLE_NAME = "snipers"
 
     def initialize sniper_listener
       super()
       @sniper_listener = sniper_listener
 
-      set_name "main_window"
+      set_name MAIN_WINDOW_NAME
       set_title APPLICATION_TITLE
       signal_connect "destroy" do
         Gtk.main_quit
@@ -31,7 +35,7 @@ module Ui
 
     def make_snipers_table
       view = Gtk::TreeView.new @sniper_listener
-      view.name = "snipers"
+      view.name = SNIPERS_TABLE_NAME
       renderer = Gtk::CellRendererText.new
       Column.values.each_with_index do |column, index|
         view.append_column Gtk::TreeViewColumn.new(column.title, renderer, text: index)
