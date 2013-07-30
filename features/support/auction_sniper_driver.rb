@@ -3,13 +3,20 @@ class AuctionSniperDriver
     @application = application
   end
 
-  def window
-    @application.main_window
-  end
-
   def wait_for_app_to_start
     wait_for { @application.main_window.title == Ui::MainWindow::APPLICATION_TITLE }
     wait_for_column_headers "Item", "Last price", "Last bid", "State"
+  end
+
+  def wait_for_displayed_sniper_status *expected_values
+    wait_for { displayed_rows.include? expected_values } or fail(
+      %{Expected a row containing #{expected_values.inspect}, but table contained #{displayed_rows.inspect}})
+  end
+
+  private
+
+  def window
+    @application.main_window
   end
 
   def wait_for_window_title title
@@ -20,11 +27,6 @@ class AuctionSniperDriver
   def wait_for_column_headers *headers
     wait_for { displayed_headers == headers } or fail(
       %{Expected displayed headers to be #{headers.inspect}, but were #{displayed_headers.inspect}})
-  end
-
-  def wait_for_displayed_sniper_status *expected_values
-    wait_for { displayed_rows.include? expected_values } or fail(
-      %{Expected a row containing #{expected_values.inspect}, but table contained #{displayed_rows.inspect}})
   end
 
   def wait_for
