@@ -70,10 +70,10 @@ class AuctionSniperDriver
 
   def element_and_children element
     return [element] unless element.respond_to? :children
-    [element] + element.children.map {|w| element_and_children w }
+    [element] + element.children.map {|e| element_and_children e }
   end
 
   def displayed_headers
-    window.child.columns.map(&:title)
+    snipers_table.columns.map(&:title)
   end
 end

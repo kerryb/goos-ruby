@@ -19,7 +19,10 @@ module Ui
         Gtk.main_quit
       end
 
-      add make_snipers_table
+      layout = Gtk::VBox.new
+      layout.add make_new_item_form
+      layout.add make_snipers_table
+      add layout
       show_all
     end
 
@@ -32,6 +35,17 @@ module Ui
     end
 
     private
+
+    def make_new_item_form
+      layout = Gtk::HBox.new
+      input = Gtk::Entry.new
+      input.name = NEW_ITEM_ID_NAME
+      button = Gtk::Button.new "Join Auction"
+      button.name = JOIN_BUTTON_NAME
+      layout.add input
+      layout.add button
+      layout
+    end
 
     def make_snipers_table
       view = Gtk::TreeView.new @sniper_listener
