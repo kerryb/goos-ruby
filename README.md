@@ -76,11 +76,6 @@ modelling persistent chats. To ensure messages only get sent to the appropriate
 listener for each auction, I've added a guard on the message originator when
 registering the listener.
 
-Also, for some reason that I've spent far too long failing to get to the bottom
-of, listeners are getting two copies of each message. For now I've added a
-fairly unpleasant hack where a message is ignored if its body is the same as
-the previous one.
-
 ### Checking state with doubles in specs
 
 RSpec doesn't have the "states" feature from JMock, but it's easy enough to

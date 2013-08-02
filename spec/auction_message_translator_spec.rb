@@ -28,15 +28,4 @@ describe AuctionMessageTranslator do
     subject.handle_message message
     expect(auction_event_listener).to have_received :auction_closed
   end
-
-  it "ignores duplicate messages" do
-    # although I'm not sure why it gets them in the first place
-    auction_event_listener.stub :current_price
-    message = double :message,
-      body: "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7; Bidder: Someone else;"
-    2.times do
-      subject.handle_message message
-    end
-    expect(auction_event_listener).to have_received(:current_price).once
-  end
 end

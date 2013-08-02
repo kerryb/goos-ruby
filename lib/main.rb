@@ -19,6 +19,7 @@ class Main
     client = setup_xmpp_client id, passsword
     start_ui
     add_user_request_listener_for client
+    client.connect
   end
 
   def stop
@@ -40,8 +41,6 @@ class Main
         ->(message) { message.from.node == "auction-#{item_id}" } do |message|
         translator.handle_message message
       end
-      #FIXME Wait, is this where the duplicate messages come from?
-      client.connect
     end
   end
 

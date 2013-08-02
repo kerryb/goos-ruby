@@ -4,8 +4,6 @@ class AuctionMessageTranslator
   end
 
   def handle_message message
-    return if message.body == @last_message_body
-    @last_message_body = message.body
     event = AuctionEvent.from message
     case event.type
     when "PRICE"
