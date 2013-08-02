@@ -1,10 +1,10 @@
 class AuctionSniperDriver
-  def initialize application
-    @application = application
+  def initialize window
+    @window = window
   end
 
   def wait_for_app_to_start
-    wait_for { @application.main_window.title == Ui::MainWindow::APPLICATION_TITLE }
+    wait_for { @window.title == Ui::MainWindow::APPLICATION_TITLE }
     wait_for_column_headers "Item", "Last price", "Last bid", "State"
   end
 
@@ -20,13 +20,9 @@ class AuctionSniperDriver
 
   private
 
-  def window
-    @application.main_window
-  end
-
   def wait_for_window_title title
-    wait_for { window.title == title } or fail(
-      %{Expected window title to be "#{title}", but was "#{window.title}"})
+    wait_for { @window.title == title } or fail(
+      %{Expected window title to be "#{title}", but was "#{@window.title}"})
   end
 
   def wait_for_column_headers *headers
@@ -65,7 +61,7 @@ class AuctionSniperDriver
   end
 
   def element_with_name name
-    element_and_children(window).flatten.find {|elem| elem.name == name } or fail "'No element named '#{name}' found"
+    element_and_children(@window).flatten.find {|elem| elem.name == name } or fail "'No element named '#{name}' found"
   end
 
   def element_and_children element

@@ -1,5 +1,4 @@
 require "main"
-require_relative "auction_sniper_driver"
 
 class ApplicationRunner
   SNIPER_ID = "sniper@localhost"
@@ -9,7 +8,7 @@ class ApplicationRunner
   def start_bidding_in *auctions
     @auction_states = Hash[*(auctions.flat_map {|a| [a, AuctionState.new(0, 0)] })]
     @application = Main.main SNIPER_ID, SNIPER_PASSWORD
-    @driver = AuctionSniperDriver.new @application
+    @driver = AuctionSniperDriver.new @application.main_window
     @driver.wait_for_app_to_start
 
     auctions.each do |auction|

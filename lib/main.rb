@@ -18,9 +18,7 @@ class Main
     @main_window = Ui::MainWindow.new @snipers
     client = setup_xmpp_client id, passsword
     start_ui
-    item_ids.each do |item_id|
-      join_auction client, item_id
-    end
+    add_user_request_listener_for client
   end
 
   def stop
@@ -29,23 +27,22 @@ class Main
 
   private
 
-  def join_auction client, item_id
-    safely_add_item_to_model item_id
-    auction = XmppAuction.new client, auction_id_for(item_id)
-    client.register_handler(:ready) { auction.join }
-    auction_sniper = AuctionSniper.new(auction,
-                                       item_id,
-                                       UiThreadSniperListener.new(@snipers))
-    translator = AuctionMessageTranslator.new client.jid.stripped.to_s, auction_sniper
-    client.register_handler :message,
-      ->(message) { message.from.node == "auction-#{item_id}" } do |message|
-      translator.handle_message message
+  def add_user_request_listener_for client
+    @main_window.add_user_request_listener do |item_id|
+      @snipers.add_sniper SniperSnapshot.joining item_id
+      auction = XmppAuction.new client, auction_id_for(item_id)
+      client.register_handler(:ready) { auction.join }
+      auction_sniper = AuctionSniper.new(auction,
+                                         item_id,
+                                         UiThreadSniperListener.new(@snipers))
+      translator = AuctionMessageTranslator.new client.jid.stripped.to_s, auction_sniper
+      client.register_handler :message,
+        ->(message) { message.from.node == "auction-#{item_id}" } do |message|
+        translator.handle_message message
+      end
+      #FIXME Wait, is this where the duplicate messages come from?
+      client.connect
     end
-    client.connect
-  end
-
-  def safely_add_item_to_model item_id
-    EM.next_tick { @snipers.add_sniper SniperSnapshot.joining(item_id) }
   end
 
   def auction_id_for item_id

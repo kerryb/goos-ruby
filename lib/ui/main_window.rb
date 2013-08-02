@@ -12,6 +12,7 @@ module Ui
     def initialize sniper_listener
       super()
       @sniper_listener = sniper_listener
+      @user_request_listeners = []
 
       set_name MAIN_WINDOW_NAME
       set_title APPLICATION_TITLE
@@ -24,6 +25,10 @@ module Ui
       layout.add make_snipers_table
       add layout
       show_all
+    end
+
+    def add_user_request_listener &listener
+      @user_request_listeners << listener
     end
 
     def show_status status
@@ -42,6 +47,9 @@ module Ui
       input.name = NEW_ITEM_ID_NAME
       button = Gtk::Button.new "Join Auction"
       button.name = JOIN_BUTTON_NAME
+      button.signal_connect("clicked") {
+        @user_request_listeners.each {|l| l.(input.text) }
+      }
       layout.add input
       layout.add button
       layout

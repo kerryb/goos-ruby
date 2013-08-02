@@ -10,6 +10,7 @@ end of each chapter:
 * [Chapter 13](https://github.com/kerryb/goos-ruby/tree/chapter-13)
 * [Chapter 14](https://github.com/kerryb/goos-ruby/tree/chapter-14)
 * [Chapter 15](https://github.com/kerryb/goos-ruby/tree/chapter-15)
+* [Chapter 16](https://github.com/kerryb/goos-ruby/tree/chapter-16)
 
 ## Tools
 
@@ -62,6 +63,11 @@ compromise between explicit interfaces and pure duck-typing, I've created
 interfaces](https://github.com/kerryb/goos-ruby/tree/master/spec/support/roles),
 which simply check that anything acting as that role implements the correct
 methods.
+
+One exception (for now, at least) is UserRequestListener from chapter 16.
+That's currently just implemented by having Main#add_user_request_listener_for
+take a block which is registered as the listener, and only handles join
+requests.
 
 ### AuctionMessageTranslator
 
