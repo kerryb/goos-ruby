@@ -1,8 +1,8 @@
 # GOOS in Ruby
 
-My attempt at implementing the auction sniper example from part II of *Growing
-Object-Oriented Software, Guided By Tests*. I've tagged the repository at the
-end of each chapter:
+My attempt at implementing the auction sniper example from part II of
+[*Growing Object-Oriented Software, Guided By Tests*](http://www.growing-object-oriented-software.com/).
+I've tagged the repository at the end of each chapter:
 
 * [Chapter 10](https://github.com/kerryb/goos-ruby/tree/chapter-10)
 * [Chapter 11](https://github.com/kerryb/goos-ruby/tree/chapter-11)
@@ -11,6 +11,12 @@ end of each chapter:
 * [Chapter 14](https://github.com/kerryb/goos-ruby/tree/chapter-14)
 * [Chapter 15](https://github.com/kerryb/goos-ruby/tree/chapter-15)
 * [Chapter 16](https://github.com/kerryb/goos-ruby/tree/chapter-16)
+
+There are links to a few other people's implementations
+[on the GOOS site](http://www.growing-object-oriented-software.com/code.html),
+including
+[another one in Ruby](https://github.com/marick/growing-oo-software-in-ruby)
+from Brian Marick.
 
 ## Tools
 
