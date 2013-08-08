@@ -16,10 +16,10 @@ class Main
   def initialize id, passsword, *item_ids
     @snipers = SnipersTableModel.new
     @main_window = Ui::MainWindow.new @snipers
-    client = setup_xmpp_client id, passsword
+    connection = setup_xmpp_client id, passsword
     start_ui
-    add_user_request_listener_for client
-    client.connect
+    add_user_request_listener_for connection
+    connection.connect
   end
 
   def stop
@@ -28,16 +28,16 @@ class Main
 
   private
 
-  def add_user_request_listener_for client
+  def add_user_request_listener_for connection
     @main_window.add_user_request_listener do |item_id|
       @snipers.add_sniper SniperSnapshot.joining item_id
-      auction = XmppAuction.new client, auction_id_for(item_id)
-      client.register_handler(:ready) { auction.join }
+      auction = XmppAuction.new connection, auction_id_for(item_id)
+      connection.register_handler(:ready) { auction.join }
       auction_sniper = AuctionSniper.new(auction,
                                          item_id,
                                          UiThreadSniperListener.new(@snipers))
-      translator = AuctionMessageTranslator.new client.jid.stripped.to_s, auction_sniper
-      client.register_handler :message,
+      translator = AuctionMessageTranslator.new connection.jid.stripped.to_s, auction_sniper
+      connection.register_handler :message,
         ->(message) { message.from.node == "auction-#{item_id}" } do |message|
         translator.handle_message message
       end
