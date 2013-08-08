@@ -4,8 +4,8 @@ class XmppAuction
   JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;"
   BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;"
 
-  def initialize client, auction_id
-    @client, @auction_id = client, auction_id
+  def initialize chat
+    @chat = chat
   end
 
   def join
@@ -19,8 +19,6 @@ class XmppAuction
   private
 
   def send_message message
-    EM.next_tick do
-      @client.write Blather::Stanza::Message.new(@auction_id, message)
-    end
+    @chat.send_message message
   end
 end

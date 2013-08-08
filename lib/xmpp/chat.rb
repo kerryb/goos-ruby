@@ -10,5 +10,11 @@ module Xmpp
         listener.handle_message message
       end
     end
+
+    def send_message message
+      EM.next_tick do
+        @connection.write Blather::Stanza::Message.new("#{@address}@localhost", message)
+      end
+    end
   end
 end

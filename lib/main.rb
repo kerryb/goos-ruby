@@ -33,10 +33,10 @@ class Main
     @main_window.add_user_request_listener do |item_id|
       @snipers.add_sniper SniperSnapshot.joining item_id
       auction_id = auction_id_for item_id
-      auction = XmppAuction.new connection, "#{auction_id}@localhost"
-      connection.register_handler(:ready) { auction.join }
       chat = Xmpp::Chat.new connection, auction_id
       (@not_to_be_gced ||= []) << chat
+      auction = XmppAuction.new chat
+      connection.register_handler(:ready) { auction.join }
       auction_sniper = AuctionSniper.new(auction, item_id,
                                          UiThreadSniperListener.new(@snipers))
       chat.add_message_listener(
