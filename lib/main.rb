@@ -32,16 +32,14 @@ class Main
   def add_user_request_listener_for connection
     ui.add_user_request_listener do |item_id|
       @snipers.add_sniper SniperSnapshot.joining item_id
-      auction_id = auction_id_for item_id
-      chat = Xmpp::Chat.new connection, auction_id
+      chat = Xmpp::Chat.new connection, auction_id_for(item_id)
       (@not_to_be_gced ||= []) << chat
       auction = XmppAuction.new chat
-      connection.register_handler(:ready) { auction.join }
-      auction_sniper = AuctionSniper.new(auction, item_id,
-                                         UiThreadSniperListener.new(@snipers))
       chat.add_message_listener(
-        AuctionMessageTranslator.new connection.jid.stripped.to_s, auction_sniper
-      )
+        AuctionMessageTranslator.new(connection.jid.stripped.to_s,
+                                     AuctionSniper.new(auction, item_id,
+                                                       UiThreadSniperListener.new(@snipers))))
+      connection.register_handler(:ready) { auction.join }
     end
   end
 
