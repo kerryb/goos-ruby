@@ -4,6 +4,7 @@ require "auction_sniper"
 require "auction_message_translator"
 require "ui_thread_sniper_listener"
 require "ui/main_window"
+require "xmpp/chat"
 require "xmpp_auction"
 
 class Main
@@ -31,21 +32,21 @@ class Main
   def add_user_request_listener_for connection
     @main_window.add_user_request_listener do |item_id|
       @snipers.add_sniper SniperSnapshot.joining item_id
-      auction = XmppAuction.new connection, auction_id_for(item_id)
+      auction_id = auction_id_for item_id
+      auction = XmppAuction.new connection, "#{auction_id}@localhost"
       connection.register_handler(:ready) { auction.join }
-      auction_sniper = AuctionSniper.new(auction,
-                                         item_id,
+      chat = Xmpp::Chat.new connection, auction_id
+      (@not_to_be_gced ||= []) << chat
+      auction_sniper = AuctionSniper.new(auction, item_id,
                                          UiThreadSniperListener.new(@snipers))
-      translator = AuctionMessageTranslator.new connection.jid.stripped.to_s, auction_sniper
-      connection.register_handler :message,
-        ->(message) { message.from.node == "auction-#{item_id}" } do |message|
-        translator.handle_message message
-      end
+      chat.add_message_listener(
+        AuctionMessageTranslator.new connection.jid.stripped.to_s, auction_sniper
+      )
     end
   end
 
   def auction_id_for item_id
-    "auction-#{item_id}@localhost"
+    "auction-#{item_id}"
   end
 
   def setup_xmpp_client id, passsword
