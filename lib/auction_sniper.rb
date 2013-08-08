@@ -1,8 +1,8 @@
 require "sniper_snapshot"
 
 class AuctionSniper
-  def initialize auction, item_id, sniper_listener
-    @auction, @item_id, @sniper_listener = auction, item_id, sniper_listener
+  def initialize item_id, auction, sniper_listener
+    @item_id, @auction, @sniper_listener = item_id, auction, sniper_listener
     @snapshot = SniperSnapshot.joining item_id
   end
 

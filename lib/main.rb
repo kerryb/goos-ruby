@@ -42,7 +42,7 @@ class Main
       )
       connection.register_handler(:ready) { auction.join }
       auction_event_listeners.add_listener(
-        AuctionSniper.new(auction, item_id,
+        AuctionSniper.new(item_id, auction,
                           UiThreadSniperListener.new(@snipers)))
     end
   end
