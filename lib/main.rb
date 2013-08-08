@@ -8,7 +8,7 @@ require "xmpp/chat"
 require "xmpp_auction"
 
 class Main
-  attr_reader :main_window
+  attr_reader :ui
 
   class << self
     alias main new
@@ -16,7 +16,7 @@ class Main
 
   def initialize id, passsword, *item_ids
     @snipers = SnipersTableModel.new
-    @main_window = Ui::MainWindow.new @snipers
+    @ui = Ui::MainWindow.new @snipers
     connection = setup_xmpp_client id, passsword
     start_ui
     add_user_request_listener_for connection
@@ -24,13 +24,13 @@ class Main
   end
 
   def stop
-    main_window.destroy
+    ui.destroy
   end
 
   private
 
   def add_user_request_listener_for connection
-    @main_window.add_user_request_listener do |item_id|
+    ui.add_user_request_listener do |item_id|
       @snipers.add_sniper SniperSnapshot.joining item_id
       auction_id = auction_id_for item_id
       chat = Xmpp::Chat.new connection, auction_id

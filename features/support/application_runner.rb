@@ -8,7 +8,7 @@ class ApplicationRunner
   def start_bidding_in *auctions
     @auction_states = Hash[*(auctions.flat_map {|a| [a, AuctionState.new(0, 0)] })]
     @application = Main.main SNIPER_ID, SNIPER_PASSWORD
-    @driver = AuctionSniperDriver.new @application.main_window
+    @driver = AuctionSniperDriver.new @application.ui
     @driver.wait_for_app_to_start
 
     auctions.each do |auction|
