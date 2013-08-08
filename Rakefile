@@ -34,5 +34,8 @@ end
 
 task :run do
   Thread.new { EM.run }
-  Main.main "sniper@localhost", "sniper", ""
+  main = Main.main "sniper@localhost", "sniper", ""
+  until main.main_window.destroyed?
+    sleep 0.1
+  end
 end
