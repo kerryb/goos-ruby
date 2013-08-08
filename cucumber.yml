@@ -1,1 +1,1 @@
-default: -r ui_test -r features
+default: -r test_support -r features
