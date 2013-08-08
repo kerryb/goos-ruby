@@ -5,6 +5,7 @@ require "auction_message_translator"
 require "ui_thread_sniper_listener"
 require "ui/main_window"
 require "xmpp/chat"
+require "announcer"
 require "xmpp_auction"
 
 class Main
@@ -33,13 +34,16 @@ class Main
     ui.add_user_request_listener do |item_id|
       @snipers.add_sniper SniperSnapshot.joining item_id
       chat = Xmpp::Chat.new connection, auction_id_for(item_id)
+      auction_event_listeners = Announcer.new
       (@not_to_be_gced ||= []) << chat
       auction = XmppAuction.new chat
       chat.add_message_listener(
-        AuctionMessageTranslator.new(connection.jid.stripped.to_s,
-                                     AuctionSniper.new(auction, item_id,
-                                                       UiThreadSniperListener.new(@snipers))))
+        AuctionMessageTranslator.new connection.jid.stripped.to_s, auction_event_listeners
+      )
       connection.register_handler(:ready) { auction.join }
+      auction_event_listeners.add_listener(
+        AuctionSniper.new(auction, item_id,
+                          UiThreadSniperListener.new(@snipers)))
     end
   end
 
