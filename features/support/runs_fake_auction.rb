@@ -1,8 +1,8 @@
 module RunsFakeAuction
   def start_auction_for_item id
     @auctions ||= []
-    auction = FakeAuctionServer.new(id)
-    @auctions.push auction
+    auction = FakeAuctionServer.new id
+    @auctions << auction
     auction.start_selling_item
   end
 
