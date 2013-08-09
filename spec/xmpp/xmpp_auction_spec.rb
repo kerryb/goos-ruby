@@ -1,7 +1,6 @@
-$:.unshift File.expand_path("../../../test_support", __FILE__)
 require "xmpp/xmpp_auction"
 require "support/roles/auction"
-require "fake_auction_server"
+require_relative "../../test_support/fake_auction_server"
 
 describe Xmpp::XmppAuction do
   subject { Xmpp::XmppAuction.new connection, "item-123" }

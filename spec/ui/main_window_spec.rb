@@ -1,4 +1,4 @@
-require "support/ui_testing"
+require_relative "../../test_support/auction_sniper_driver"
 require "ui/main_window"
 
 describe Ui::MainWindow do
