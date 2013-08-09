@@ -10,10 +10,10 @@ class Main
     alias main new
   end
 
-  def initialize id, passsword
+  def initialize username, passsword
     @snipers = SnipersTableModel.new
     @ui = Ui::MainWindow.new @snipers
-    connection = setup_xmpp_client id, passsword
+    connection = setup_xmpp_client username, passsword
     start_ui
     disconnect_when_ui_closes connection
     add_user_request_listener_for connection
@@ -44,8 +44,8 @@ class Main
     end
   end
 
-  def setup_xmpp_client id, passsword
-    Blather::Client.setup id, passsword
+  def setup_xmpp_client username, passsword
+    Blather::Client.setup username, passsword
   end
 
   # Blocks main thread
