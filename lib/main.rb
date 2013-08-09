@@ -13,7 +13,7 @@ class Main
   def initialize username, passsword
     @snipers = SnipersTableModel.new
     @ui = Ui::MainWindow.new @snipers
-    auction_house = XmppAuctionHouse.new username, passsword
+    auction_house = Xmpp::XmppAuctionHouse.new username, passsword
     start_ui
     disconnect_when_ui_closes auction_house
     add_user_request_listener_for auction_house
