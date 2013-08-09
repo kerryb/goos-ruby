@@ -1,7 +1,7 @@
 require "auction_sniper"
 require "ui_thread_sniper_listener"
 require "ui/main_window"
-require "xmpp_auction"
+require "xmpp/xmpp_auction"
 
 class Main
   attr_reader :ui
@@ -35,7 +35,7 @@ class Main
   def add_user_request_listener_for connection
     ui.add_user_request_listener do |item_id|
       @snipers.add_sniper SniperSnapshot.joining item_id
-      auction = XmppAuction.new connection, item_id
+      auction = Xmpp::XmppAuction.new connection, item_id
       (@not_to_be_gced ||= []) << auction
       connection.register_handler(:ready) { auction.join }
       auction.add_event_listener(

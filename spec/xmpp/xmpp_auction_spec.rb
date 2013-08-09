@@ -1,10 +1,10 @@
-$:.unshift File.expand_path("../../test_support", __FILE__)
-require "xmpp_auction"
+$:.unshift File.expand_path("../../../test_support", __FILE__)
+require "xmpp/xmpp_auction"
 require "support/roles/auction"
 require "fake_auction_server"
 
-describe XmppAuction do
-  subject { XmppAuction.new connection, "item-123" }
+describe Xmpp::XmppAuction do
+  subject { Xmpp::XmppAuction.new connection, "item-123" }
   let(:connection) {
     double :connection, register_handler: true, jid: double(stripped: "sniper")
   }
@@ -12,7 +12,7 @@ describe XmppAuction do
   it_behaves_like "an auction"
 
   context "integration" do
-    subject(:auction) { XmppAuction.new connection, item_id }
+    subject(:auction) { Xmpp::XmppAuction.new connection, item_id }
     let(:item_id) { "item-54321" }
     let(:server) { FakeAuctionServer.new item_id }
     let(:connection) { Blather::Client.setup "sniper@localhost", "sniper" }

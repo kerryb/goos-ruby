@@ -1,8 +1,8 @@
 require "support/roles/auction_event_listener"
-require "auction_message_translator"
+require "xmpp/auction_message_translator"
 
-describe AuctionMessageTranslator do
-  subject { AuctionMessageTranslator.new sniper_id, auction_event_listener }
+describe Xmpp::AuctionMessageTranslator do
+  subject { Xmpp::AuctionMessageTranslator.new sniper_id, auction_event_listener }
   let(:sniper_id) { "sniper@localhost" }
   let(:auction_event_listener) { double :auction_event_listener }
 
