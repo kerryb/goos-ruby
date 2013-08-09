@@ -1,5 +1,3 @@
-require "blather/client/client"
-
 require "auction_sniper"
 require "ui_thread_sniper_listener"
 require "ui/main_window"
