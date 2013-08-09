@@ -12,7 +12,7 @@ class Main
     alias main new
   end
 
-  def initialize id, passsword, *item_ids
+  def initialize id, passsword
     @snipers = SnipersTableModel.new
     @ui = Ui::MainWindow.new @snipers
     connection = setup_xmpp_client id, passsword
