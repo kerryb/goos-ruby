@@ -15,6 +15,7 @@ class Main
     @ui = Ui::MainWindow.new @snipers
     connection = setup_xmpp_client id, passsword
     start_ui
+    disconnect_when_ui_closes connection
     add_user_request_listener_for connection
     connection.connect
   end
@@ -24,6 +25,12 @@ class Main
   end
 
   private
+
+  def disconnect_when_ui_closes connection
+    @ui.signal_connect :destroy do
+      connection.close
+    end
+  end
 
   def add_user_request_listener_for connection
     ui.add_user_request_listener do |item_id|
