@@ -1,7 +1,7 @@
 require "auction_sniper"
 require "ui_thread_sniper_listener"
 require "ui/main_window"
-require "xmpp/xmpp_auction"
+require "xmpp/xmpp_auction_house"
 
 class Main
   attr_reader :ui
@@ -13,11 +13,10 @@ class Main
   def initialize username, passsword
     @snipers = SnipersTableModel.new
     @ui = Ui::MainWindow.new @snipers
-    connection = setup_xmpp_client username, passsword
+    auction_house = XmppAuctionHouse.new username, passsword
     start_ui
-    disconnect_when_ui_closes connection
-    add_user_request_listener_for connection
-    connection.connect
+    disconnect_when_ui_closes auction_house
+    add_user_request_listener_for auction_house
   end
 
   def stop
@@ -26,26 +25,21 @@ class Main
 
   private
 
-  def disconnect_when_ui_closes connection
+  def disconnect_when_ui_closes auction_house
     @ui.signal_connect :destroy do
-      connection.close
+      auction_house.disconnect
     end
   end
 
-  def add_user_request_listener_for connection
+  def add_user_request_listener_for auction_house
     ui.add_user_request_listener do |item_id|
       @snipers.add_sniper SniperSnapshot.joining item_id
-      auction = Xmpp::XmppAuction.new connection, item_id
+      auction = auction_house.auction_for item_id
       (@not_to_be_gced ||= []) << auction
-      connection.register_handler(:ready) { auction.join }
       auction.add_event_listener(
         AuctionSniper.new(item_id, auction,
                           UiThreadSniperListener.new(@snipers)))
     end
-  end
-
-  def setup_xmpp_client username, passsword
-    Blather::Client.setup username, passsword
   end
 
   # Blocks main thread
