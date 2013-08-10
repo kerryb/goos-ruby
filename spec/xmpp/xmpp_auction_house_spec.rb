@@ -15,6 +15,7 @@ describe Xmpp::XmppAuctionHouse do
     server.start_selling_item
     listener.stub(:auction_closed) { @auction_close_event_received = true }
     auction.add_event_listener listener
+    auction.join
   end
 
   after do

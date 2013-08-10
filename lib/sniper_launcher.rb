@@ -12,5 +12,6 @@ class SniperLauncher
     sniper = AuctionSniper.new item_id, auction
     auction.add_event_listener sniper
     @collector.add_sniper sniper
+    auction.join
   end
 end
