@@ -1,5 +1,5 @@
-require "auction_sniper"
-require "ui_thread_sniper_listener"
+require "sniper_launcher"
+require "ui/snipers_table_model"
 require "ui/main_window"
 require "xmpp/xmpp_auction_house"
 
@@ -16,7 +16,7 @@ class Main
     auction_house = Xmpp::XmppAuctionHouse.new username, passsword
     start_ui
     disconnect_when_ui_closes auction_house
-    add_user_request_listener_for auction_house
+    ui.add_user_request_listener SniperLauncher.new(auction_house, @snipers)
   end
 
   def stop
@@ -28,17 +28,6 @@ class Main
   def disconnect_when_ui_closes auction_house
     @ui.signal_connect :destroy do
       auction_house.disconnect
-    end
-  end
-
-  def add_user_request_listener_for auction_house
-    ui.add_user_request_listener do |item_id|
-      @snipers.add_sniper SniperSnapshot.joining item_id
-      auction = auction_house.auction_for item_id
-      (@not_to_be_gced ||= []) << auction
-      auction.add_event_listener(
-        AuctionSniper.new(item_id, auction,
-                          UiThreadSniperListener.new(@snipers)))
     end
   end
 

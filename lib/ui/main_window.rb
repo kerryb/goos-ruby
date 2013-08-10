@@ -27,7 +27,7 @@ module Ui
       show_all
     end
 
-    def add_user_request_listener &listener
+    def add_user_request_listener listener
       @user_request_listeners << listener
     end
 
@@ -48,7 +48,7 @@ module Ui
       button = Gtk::Button.new "Join Auction"
       button.name = JOIN_BUTTON_NAME
       button.signal_connect("clicked") {
-        @user_request_listeners.each {|l| l.(input.text) }
+        @user_request_listeners.each {|l| l.join_auction input.text }
       }
       layout.add input
       layout.add button
