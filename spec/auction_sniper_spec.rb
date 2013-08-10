@@ -4,15 +4,16 @@ require "support/roles/auction_event_listener"
 require "auction_sniper"
 
 describe AuctionSniper do
-  subject { AuctionSniper.new item_id, auction, sniper_listener }
+  subject { AuctionSniper.new item_id, auction }
   let(:auction) { double :auction, join: true, bid: true }
   let(:item_id) { "item-123" }
   let(:price) { 1001 }
   let(:increment) { 25 }
   let(:sniper_listener) { double :sniper_listener }
 
-  it_behaves_like "an auction event listener"
+  before { subject.add_sniper_listener sniper_listener }
 
+  it_behaves_like "an auction event listener"
 
   context "when a new price arrives" do
     before { sniper_listener.stub :sniper_state_changed }

@@ -1,7 +1,12 @@
 require "support/roles/sniper_listener"
+require "support/roles/sniper_collector"
 require "ui/snipers_table_model"
+#TODO isolate from AuctionSniper
+require "auction_sniper"
 
 describe Ui::SnipersTableModel do
+  let(:auction) { double :auction }
+
   def rows
     rows = []
     subject.each do |_model, _path, iter|
@@ -16,6 +21,7 @@ describe Ui::SnipersTableModel do
   end
 
   it_behaves_like "a sniper listener"
+  it_behaves_like "a sniper collector"
 
   it "Has enough columns" do
     expect(subject.n_columns).to eq Column.values.size
@@ -29,16 +35,16 @@ describe Ui::SnipersTableModel do
 
   describe "#add_sniper" do
     it "sets the item ID, last price, last bid and sniper status" do
-      subject.add_sniper SniperSnapshot.joining("item-123")
+      subject.add_sniper AuctionSniper.new("item-123", auction)
       expect(rows).to eq [["item-123", 0, 0, SniperState::JOINING.to_s]]
     end
   end
 
   describe "#sniper_state_changed" do
     before do
-      subject.add_sniper SniperSnapshot.joining("item-123")
-      subject.add_sniper SniperSnapshot.joining("item-456")
-      subject.add_sniper SniperSnapshot.joining("item-789")
+      subject.add_sniper AuctionSniper.new("item-123", auction)
+      subject.add_sniper AuctionSniper.new("item-456", auction)
+      subject.add_sniper AuctionSniper.new("item-789", auction)
     end
 
     it "updates the values in the correct row" do

@@ -1,6 +1,7 @@
 require "gtk2"
 require "sniper_snapshot"
 require "column"
+require "ui_thread_sniper_listener"
 
 module Ui
   class SnipersTableModel < Gtk::ListStore
@@ -8,9 +9,11 @@ module Ui
       super String, Integer, Integer, String
     end
 
-    def add_sniper sniper_snapshot
+    def add_sniper sniper
+      (@not_to_be_gced ||= []) << sniper
       row = append
-      update_row row, sniper_snapshot
+      update_row row, sniper.snapshot
+      sniper.add_sniper_listener UiThreadSniperListener.new(self)
     end
 
     def sniper_state_changed sniper_snapshot

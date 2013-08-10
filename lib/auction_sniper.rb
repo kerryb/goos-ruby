@@ -1,8 +1,10 @@
 require "sniper_snapshot"
 
 class AuctionSniper
-  def initialize item_id, auction, sniper_listener
-    @item_id, @auction, @sniper_listener = item_id, auction, sniper_listener
+  attr_reader :snapshot
+
+  def initialize item_id, auction
+    @item_id, @auction, = item_id, auction
     @snapshot = SniperSnapshot.joining item_id
   end
 
@@ -15,6 +17,10 @@ class AuctionSniper
       @snapshot = @snapshot.bidding(price, bid)
     end
     notify_change
+  end
+
+  def add_sniper_listener sniper_listener
+    @sniper_listener = sniper_listener
   end
 
   def auction_closed
