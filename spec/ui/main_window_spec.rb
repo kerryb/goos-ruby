@@ -1,9 +1,10 @@
 require_relative "../../test_support/auction_sniper_driver"
 require "ui/main_window"
+require "ui/snipers_table_model"
 
 describe Ui::MainWindow do
   describe "when join button clicked" do
-    subject(:window) { Ui::MainWindow.new SnipersTableModel.new }
+    subject(:window) { Ui::MainWindow.new Ui::SnipersTableModel.new }
     let(:driver) { AuctionSniperDriver.new window }
     let(:listener) { double :listener, join_auction: true }
 

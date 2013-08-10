@@ -11,7 +11,7 @@ class Main
   end
 
   def initialize username, passsword
-    @snipers = SnipersTableModel.new
+    @snipers = Ui::SnipersTableModel.new
     @ui = Ui::MainWindow.new @snipers
     auction_house = Xmpp::XmppAuctionHouse.new username, passsword
     start_ui

@@ -1,7 +1,7 @@
 require "support/roles/sniper_listener"
 require "ui/snipers_table_model"
 
-describe SnipersTableModel do
+describe Ui::SnipersTableModel do
   def rows
     rows = []
     subject.each do |_model, _path, iter|

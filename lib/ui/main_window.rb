@@ -1,5 +1,4 @@
 require "gtk2"
-require "ui/snipers_table_model"
 
 module Ui
   class MainWindow < Gtk::Window
