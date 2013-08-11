@@ -31,10 +31,6 @@ module Ui
       @user_request_listeners << listener
     end
 
-    def show_status status
-      @model.status_text = status
-    end
-
     def sniper_state_changed sniper_snapshot
       @model.sniper_state_changed sniper_snapshot
     end
