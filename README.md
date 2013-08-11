@@ -11,6 +11,7 @@ I've tagged the repository at the end of each chapter:
 * [Chapter 14](https://github.com/kerryb/goos-ruby/tree/chapter-14)
 * [Chapter 15](https://github.com/kerryb/goos-ruby/tree/chapter-15)
 * [Chapter 16](https://github.com/kerryb/goos-ruby/tree/chapter-16)
+* [Chapter 17](https://github.com/kerryb/goos-ruby/tree/chapter-17)
 
 There are links to a few other people's implementations
 [on the GOOS site](http://www.growing-object-oriented-software.com/code.html),
