@@ -6,8 +6,9 @@ class SniperState
   JOINING = new "Joining", false, :LOST
   BIDDING = new "Bidding", false, :LOST
   WINNING = new "Winning", true, :WON
-  LOST = new "Lost"
-  WON = new "Won"
+  LOSING = new "Losing", false, :LOST
+  LOST = new "Lost", false
+  WON = new "Won", true
 
   def to_s
     name

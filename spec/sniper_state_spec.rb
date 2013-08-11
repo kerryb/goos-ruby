@@ -3,6 +3,7 @@ require "sniper_state"
 {
   SniperState::JOINING => "Joining",
   SniperState::BIDDING => "Bidding",
+  SniperState::LOSING => "Losing",
   SniperState::WINNING => "Winning",
   SniperState::LOST => "Lost",
   SniperState::WON => "Won",
@@ -17,6 +18,7 @@ end
 {
   SniperState::JOINING => SniperState::LOST,
   SniperState::BIDDING => SniperState::LOST,
+  SniperState::LOSING => SniperState::LOST,
   SniperState::WINNING => SniperState::WON,
 }.each do |state, state_after_close|
   describe state.name do
