@@ -1,14 +1,18 @@
 require "sniper_state"
 
 {
-  SniperState::JOINING => "Joining",
-  SniperState::BIDDING => "Bidding",
-  SniperState::LOSING => "Losing",
-  SniperState::WINNING => "Winning",
-  SniperState::LOST => "Lost",
-  SniperState::WON => "Won",
-}.each do |state, label|
+  SniperState::JOINING => [false, "Joining"],
+  SniperState::BIDDING => [false, "Bidding"],
+  SniperState::LOSING => [false, "Losing"],
+  SniperState::WINNING => [true, "Winning"],
+  SniperState::LOST => [false, "Lost"],
+  SniperState::WON => [true, "Won"],
+}.each do |state, (winning, label)|
   describe state.name do
+    specify "is #{winning ? '' : 'not '} winning" do
+      expect(state.winning?).to eq winning
+    end
+
     specify "translates as '#{label}'" do
       expect(state.to_s).to eq label
     end
