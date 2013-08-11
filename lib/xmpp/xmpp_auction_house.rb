@@ -15,10 +15,6 @@ module Xmpp
       auction
     end
 
-    def disconnect
-      @connection.close
-    end
-
     private
 
     def setup_xmpp_client username, passsword

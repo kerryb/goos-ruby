@@ -15,7 +15,6 @@ class Main
     @ui = Ui::MainWindow.new @snipers
     auction_house = Xmpp::XmppAuctionHouse.new username, passsword
     start_ui
-    disconnect_when_ui_closes auction_house
     ui.add_user_request_listener SniperLauncher.new(auction_house, @snipers)
   end
 
@@ -24,12 +23,6 @@ class Main
   end
 
   private
-
-  def disconnect_when_ui_closes auction_house
-    @ui.signal_connect :destroy do
-      auction_house.disconnect
-    end
-  end
 
   # Blocks main thread
   def start_ui
