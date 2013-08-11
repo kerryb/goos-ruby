@@ -8,10 +8,11 @@ module Ui
     JOIN_BUTTON_NAME = "join"
     SNIPERS_TABLE_NAME = "snipers"
 
-    def initialize sniper_listener
+    def initialize portfolio
       super()
-      @sniper_listener = sniper_listener
       @user_request_listeners = []
+      @model = Ui::SnipersTableModel.new
+      portfolio.add_portfolio_listener @model
 
       set_name MAIN_WINDOW_NAME
       set_title APPLICATION_TITLE
@@ -31,11 +32,11 @@ module Ui
     end
 
     def show_status status
-      @sniper_listener.status_text = status
+      @model.status_text = status
     end
 
     def sniper_state_changed sniper_snapshot
-      @sniper_listener.sniper_state_changed sniper_snapshot
+      @model.sniper_state_changed sniper_snapshot
     end
 
     private
@@ -55,7 +56,7 @@ module Ui
     end
 
     def make_snipers_table
-      view = Gtk::TreeView.new @sniper_listener
+      view = Gtk::TreeView.new @model
       view.name = SNIPERS_TABLE_NAME
       renderer = Gtk::CellRendererText.new
       Column.values.each_with_index do |column, index|

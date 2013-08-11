@@ -1,10 +1,13 @@
 require_relative "../../test_support/auction_sniper_driver"
+require "support/roles/portfolio_listener"
 require "ui/main_window"
 require "ui/snipers_table_model"
+require "sniper_portfolio"
 
 describe Ui::MainWindow do
+  subject(:window) { Ui::MainWindow.new SniperPortfolio.new }
+
   describe "when join button clicked" do
-    subject(:window) { Ui::MainWindow.new Ui::SnipersTableModel.new }
     let(:driver) { AuctionSniperDriver.new window }
     let(:listener) { double :listener, join_auction: true }
 

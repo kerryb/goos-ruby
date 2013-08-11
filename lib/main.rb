@@ -1,4 +1,5 @@
 require "sniper_launcher"
+require "sniper_portfolio"
 require "ui/snipers_table_model"
 require "ui/main_window"
 require "xmpp/xmpp_auction_house"
@@ -11,11 +12,11 @@ class Main
   end
 
   def initialize username, passsword
-    @snipers = Ui::SnipersTableModel.new
-    @ui = Ui::MainWindow.new @snipers
+    @portfolio = SniperPortfolio.new
+    @ui = Ui::MainWindow.new @portfolio
     auction_house = Xmpp::XmppAuctionHouse.new username, passsword
     start_ui
-    ui.add_user_request_listener SniperLauncher.new(auction_house, @snipers)
+    ui.add_user_request_listener SniperLauncher.new(auction_house, @portfolio)
   end
 
   def stop

@@ -9,8 +9,7 @@ module Ui
       super String, Integer, Integer, String
     end
 
-    def add_sniper sniper
-      (@not_to_be_gced ||= []) << sniper
+    def sniper_added sniper
       row = append
       update_row row, sniper.snapshot
       sniper.add_sniper_listener UiThreadSniperListener.new(self)

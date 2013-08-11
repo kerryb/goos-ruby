@@ -19,7 +19,6 @@ describe Ui::SnipersTableModel do
   end
 
   it_behaves_like "a sniper listener"
-  it_behaves_like "a sniper collector"
 
   it "Has enough columns" do
     expect(subject.n_columns).to eq Column.values.size
@@ -31,12 +30,11 @@ describe Ui::SnipersTableModel do
     end
   end
 
-  describe "#add_sniper" do
+  describe "#sniper_added" do
     it "sets the item ID, last price, last bid and sniper status" do
       sniper = double(:sniper, snapshot: SniperSnapshot.joining("item-123"),
                       add_sniper_listener: true)
-      subject.add_sniper sniper
-      #subject.add_sniper AuctionSniper.new("item-123", auction)
+      subject.sniper_added sniper
       expect(rows).to eq [["item-123", 0, 0, SniperState::JOINING.to_s]]
     end
   end
@@ -46,7 +44,7 @@ describe Ui::SnipersTableModel do
       %w[item-123 item-456 item-789].each do |item_id|
         sniper = double("sniper for #{item_id}", snapshot: SniperSnapshot.joining(item_id),
                         add_sniper_listener: true)
-        subject.add_sniper sniper
+        subject.sniper_added sniper
       end
     end
 
