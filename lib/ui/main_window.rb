@@ -21,7 +21,7 @@ module Ui
         Gtk.main_quit
       end
 
-      layout = Gtk::VBox.new
+      layout = Gtk::VBox.new false, 5
       layout.add make_new_item_form
       layout.add make_snipers_table
       add layout
@@ -39,7 +39,7 @@ module Ui
     private
 
     def make_new_item_form
-      layout = Gtk::HBox.new
+      layout = Gtk::HBox.new false, 5
 
       item_id_input = Gtk::Entry.new
       item_id_input.name = NEW_ITEM_ID_NAME
