@@ -96,6 +96,6 @@ implemented as (rather inelegant) collections of constants.
 
 ### Bugs
 
-There seems to be a race condition on startup -- every so often a feature will
+There seems to be a race condition on startup – every so often a feature will
 fail because (I think) the auction server never receives a join request from
 the sniper.
