@@ -29,3 +29,12 @@ Feature: End-to-end test
     Given auctions of two items are in progress
     When I bid in both auctions
     Then I should win both items
+
+  @wip
+  Scenario: Lose an auction because bids go over my stop price
+    Given an auction of an item is in progress
+    When I start bidding in the auction
+    And other bidders push the auction over my stop price
+    Then I should stop bidding
+    When the auction closes
+    Then I should have lost the auction
