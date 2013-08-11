@@ -34,6 +34,8 @@ end
 
 task :run do
   Thread.new { EM.run }
+  sleep 0.01 until EM.reactor_running?
+  #FIXME this stopped working in 5faebfe
   main = Main.main "sniper@localhost", "sniper"
   until main.ui.destroyed?
     sleep 0.1
