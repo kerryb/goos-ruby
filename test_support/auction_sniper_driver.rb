@@ -8,8 +8,9 @@ class AuctionSniperDriver
     wait_for_column_headers "Item", "Last price", "Last bid", "State"
   end
 
-  def start_bidding_for item_id
+  def start_bidding_for item_id, stop_price
     new_item_id_input.text = item_id
+    stop_price_input.text = stop_price.to_s
     join_auction_button.clicked
   end
 
@@ -45,6 +46,10 @@ class AuctionSniperDriver
 
   def new_item_id_input
     element_with_name Ui::MainWindow::NEW_ITEM_ID_NAME
+  end
+
+  def stop_price_input
+    element_with_name Ui::MainWindow::STOP_PRICE_NAME
   end
 
   def join_auction_button

@@ -5,6 +5,7 @@ module Ui
     APPLICATION_TITLE = "Auction sniper"
     MAIN_WINDOW_NAME = "main_window"
     NEW_ITEM_ID_NAME = "new_item_id"
+    STOP_PRICE_NAME = "stop_price"
     JOIN_BUTTON_NAME = "join"
     SNIPERS_TABLE_NAME = "snipers"
 
@@ -39,14 +40,23 @@ module Ui
 
     def make_new_item_form
       layout = Gtk::HBox.new
-      input = Gtk::Entry.new
-      input.name = NEW_ITEM_ID_NAME
+
+      item_id_input = Gtk::Entry.new
+      item_id_input.name = NEW_ITEM_ID_NAME
+
+      stop_price_input = Gtk::Entry.new
+      stop_price_input.name = STOP_PRICE_NAME
+
       button = Gtk::Button.new "Join Auction"
       button.name = JOIN_BUTTON_NAME
       button.signal_connect("clicked") {
-        @user_request_listeners.each {|l| l.join_auction input.text }
+        @user_request_listeners.each {|l| l.join_auction item_id_input.text }
       }
-      layout.add input
+
+      layout.add Gtk::Label.new("Item:")
+      layout.add item_id_input
+      layout.add Gtk::Label.new("Stop price:")
+      layout.add stop_price_input
       layout.add button
       layout
     end

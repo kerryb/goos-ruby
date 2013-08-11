@@ -33,7 +33,7 @@ Feature: End-to-end test
   @wip
   Scenario: Lose an auction because bids go over my stop price
     Given an auction of an item is in progress
-    When I start bidding in the auction
+    When I start bidding in the auction, specifying a stop price
     And other bidders push the auction over my stop price
     And the auction closes
     Then I should have lost the auction

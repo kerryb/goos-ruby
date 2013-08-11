@@ -1,10 +1,15 @@
 When "I start bidding in the auction" do
-  sniper.start_bidding_in auction
+  sniper.start_bidding_in auction => 999999
+  auction.wait_for_join_request_from_sniper ApplicationRunner::SNIPER_ID
+end
+
+When "I start bidding in the auction, specifying a stop price" do
+  sniper.start_bidding_in auction => 1100
   auction.wait_for_join_request_from_sniper ApplicationRunner::SNIPER_ID
 end
 
 When "I bid in both auctions" do
-  sniper.start_bidding_in auction_1, auction_2
+  sniper.start_bidding_in auction_1 => 999999, auction_2 => 999999
   auction_1.wait_for_join_request_from_sniper ApplicationRunner::SNIPER_ID
   auction_2.wait_for_join_request_from_sniper ApplicationRunner::SNIPER_ID
 end

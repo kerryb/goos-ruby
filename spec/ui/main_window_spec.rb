@@ -14,7 +14,7 @@ describe Ui::MainWindow do
     it "passes the item ID to  user request listeners" do
       window.add_user_request_listener listener
 
-      driver.start_bidding_for "item-123"
+      driver.start_bidding_for "item-123", 999999
       expect(listener).to have_received(:join_auction).with "item-123"
     end
   end
