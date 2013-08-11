@@ -16,6 +16,16 @@ When "I am told that I am the high bidder" do
   expect(sniper).to be_winning_auction auction
 end
 
+When "other bidders push the auction over my stop price" do
+  auction.report_price 1000, 98, "other bidder"
+  expect(sniper).to be_bidding auction, 1000, 1098
+  auction.wait_for_sniper_to_bid 1098, ApplicationRunner::SNIPER_ID
+  auction.report_price 1197, 10, "third party"
+  expect(sniper).to be_losing_auction auction, 1197, 1098
+  auction.report_price 1207, 10, "fourth party"
+  expect(sniper).to be_losing_auction auction, 1207, 1098
+end
+
 When "the auction closes" do
   auction.close
 end

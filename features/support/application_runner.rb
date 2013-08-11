@@ -36,6 +36,13 @@ class ApplicationRunner
                                              SniperState::WINNING.to_s)
   end
 
+  def losing_auction? auction, last_price, last_bid
+    @driver.wait_for_displayed_sniper_status(auction.item_id,
+                                             last_price,
+                                             last_bid,
+                                             SniperState::LOSING.to_s)
+  end
+
   def has_lost_auction? auction
     @driver.wait_for_displayed_sniper_status(auction.item_id,
                                              @auction_states[auction].last_price,
