@@ -7,7 +7,8 @@ require "item"
 describe AuctionSniper do
   subject { AuctionSniper.new item, auction }
   let(:auction) { double :auction, join: true, bid: true }
-  let(:item) { Item.new "item-123" }
+  let(:item_id) { "item-123" }
+  let(:item) { Item.new item_id }
   let(:price) { 1001 }
   let(:increment) { 25 }
   let(:sniper_listener) { double :sniper_listener }
@@ -24,7 +25,7 @@ describe AuctionSniper do
 
       it "reports that it's winning" do
         expect(sniper_listener).to have_received(:sniper_state_changed).with(
-          SniperSnapshot.new(item, price, price, SniperState::WINNING)
+          SniperSnapshot.new(item_id, price, price, SniperState::WINNING)
         )
       end
     end
@@ -38,7 +39,7 @@ describe AuctionSniper do
 
       it "reports that it's bidding" do
         expect(sniper_listener).to have_received(:sniper_state_changed).with(
-          SniperSnapshot.new(item, price, price + increment, SniperState::BIDDING)
+          SniperSnapshot.new(item_id, price, price + increment, SniperState::BIDDING)
         )
       end
     end
@@ -48,7 +49,7 @@ describe AuctionSniper do
     sniper_listener.stub :sniper_state_changed
     subject.auction_closed
     expect(sniper_listener).to have_received(:sniper_state_changed).with(
-      SniperSnapshot.new(item, 0, 0, SniperState::LOST)
+      SniperSnapshot.new(item_id, 0, 0, SniperState::LOST)
     )
   end
 
@@ -65,7 +66,7 @@ describe AuctionSniper do
     subject.auction_closed
 
     expect(sniper_listener).to have_received(:sniper_state_changed).with(
-      SniperSnapshot.new(item, price, price + increment, SniperState::LOST)
+      SniperSnapshot.new(item_id, price, price + increment, SniperState::LOST)
     )
   end
 
@@ -77,7 +78,7 @@ describe AuctionSniper do
     subject.auction_closed
 
     expect(sniper_listener).to have_received(:sniper_state_changed).with(
-      SniperSnapshot.new(item, price, price, SniperState::WON)
+      SniperSnapshot.new(item_id, price, price, SniperState::WON)
     )
   end
 end

@@ -5,7 +5,7 @@ class AuctionSniper
 
   def initialize item, auction
     @item, @auction, = item, auction
-    @snapshot = SniperSnapshot.joining item
+    @snapshot = SniperSnapshot.joining item.identifier
   end
 
   def current_price price, increment, price_source

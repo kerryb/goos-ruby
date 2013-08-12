@@ -21,7 +21,7 @@ module Ui
 
     def row_for sniper_snapshot
       each do |_model, _path, iterator|
-        return iterator if iterator[Column::ITEM_IDENTIFIER.index] == sniper_snapshot.item.identifier
+        return iterator if iterator[Column::ITEM_IDENTIFIER.index] == sniper_snapshot.item_id
       end
       raise Defect.new "Row not found"
     end

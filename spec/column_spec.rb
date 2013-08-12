@@ -1,11 +1,8 @@
 require "column"
+require "sniper_snapshot"
 
 describe Column do
-  let(:snapshot) {
-    double(:snapshot, item: double(identifier: "item-123"),
-           last_price: 100, last_bid: 110,
-           sniper_state: double(to_s: "Joining"))
-  }
+  let(:snapshot) { SniperSnapshot.new "item-123", 100, 110, SniperState::JOINING }
 
   [Column::ITEM_IDENTIFIER, Column::LAST_PRICE,
    Column::LAST_BID, Column::SNIPER_STATE].each_with_index do |column, index|
@@ -22,7 +19,7 @@ describe Column do
   end
 
   [
-    ["ITEM_IDENTIFIER", "Item", "item.identifier"],
+    ["ITEM_IDENTIFIER", "Item", "item_id"],
     ["LAST_PRICE", "Last price", "last_price"],
     ["LAST_BID", "Last bid", "last_bid"],
     ["SNIPER_STATE", "State", "sniper_state.to_s"],

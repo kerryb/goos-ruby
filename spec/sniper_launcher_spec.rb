@@ -15,11 +15,11 @@ describe SniperLauncher do
     auction_state = :not_joined
     expect(auction).to receive :add_event_listener do |listener|
       expect(auction_state).to eq :not_joined
-      expect(listener.snapshot.item).to eq item
+      expect(listener.snapshot.item_id).to eq "item-123"
     end
     expect(collector).to receive :add_sniper do |sniper|
       expect(auction_state).to eq :not_joined
-      expect(sniper.snapshot.item).to eq item
+      expect(sniper.snapshot.item_id).to eq "item-123"
     end
     expect(auction).to receive :join do
       auction_state = :joined
