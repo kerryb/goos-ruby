@@ -2,11 +2,12 @@ require "support/roles/auction"
 require "support/roles/sniper_listener"
 require "support/roles/auction_event_listener"
 require "auction_sniper"
+require "item"
 
 describe AuctionSniper do
   subject { AuctionSniper.new item, auction }
   let(:auction) { double :auction, join: true, bid: true }
-  let(:item) { "item-123" }
+  let(:item) { Item.new "item-123" }
   let(:price) { 1001 }
   let(:increment) { 25 }
   let(:sniper_listener) { double :sniper_listener }

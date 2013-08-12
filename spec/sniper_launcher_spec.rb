@@ -5,7 +5,7 @@ describe SniperLauncher do
   let(:auction_house) { double :auction_house }
   let(:collector) { double :collector, add_sniper: true }
   let(:auction) { double :auction, add_event_listener: true }
-  let(:item) { double :item }
+  let(:item) { Item.new "item-123" }
 
   before do
     auction_house.stub(:auction_for).with(item) { auction }

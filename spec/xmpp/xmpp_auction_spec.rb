@@ -6,7 +6,7 @@ describe Xmpp::XmppAuction do
   let(:connection) {
     double :connection, register_handler: true, jid: double(stripped: "sniper")
   }
-  let(:item) { double :item, identifier: "item-123" }
+  let(:item) { Item.new "item-123" }
 
   it_behaves_like "an auction"
 end

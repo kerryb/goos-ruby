@@ -1,7 +1,7 @@
 require "sniper_snapshot"
 
 describe SniperSnapshot do
-  let(:item) { double :item }
+  let(:item) { Item.new "item-123" }
 
   describe ".joining" do
     it "returns an initial snapshot" do
