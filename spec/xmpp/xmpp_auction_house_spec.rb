@@ -3,9 +3,9 @@ require_relative "../../test_support/fake_auction_server"
 
 describe Xmpp::XmppAuctionHouse do
   let(:auction_house) { Xmpp::XmppAuctionHouse.new "sniper@localhost", "sniper" }
-  let(:auction) { auction_house.auction_for item_id }
-  let(:item_id) { "item-54321" }
-  let(:server) { FakeAuctionServer.new item_id }
+  let(:item) { double :item, identifier: "item-54321" }
+  let(:auction) { auction_house.auction_for item }
+  let(:server) { FakeAuctionServer.new "item-54321" }
   let(:listener) { double :listener }
 
   before do

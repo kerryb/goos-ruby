@@ -10,8 +10,8 @@ module Xmpp
       sleep 0.1 until @ready
     end
 
-    def auction_for item_id
-      auction = Xmpp::XmppAuction.new @connection, item_id
+    def auction_for item
+      auction = Xmpp::XmppAuction.new @connection, item
       auction
     end
 

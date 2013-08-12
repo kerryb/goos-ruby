@@ -1,4 +1,6 @@
 require "gtk2"
+require "ui/snipers_table_model"
+require "item"
 
 module Ui
   class MainWindow < Gtk::Window
@@ -50,7 +52,8 @@ module Ui
       button = Gtk::Button.new "Join Auction"
       button.name = JOIN_BUTTON_NAME
       button.signal_connect("clicked") {
-        @user_request_listeners.each {|l| l.join_auction item_id_input.text }
+        item = Item.new item_id_input.text, stop_price_input.text.to_i
+        @user_request_listeners.each {|l| l.join_auction item }
       }
 
       layout.add Gtk::Label.new("Item:")

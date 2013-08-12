@@ -2,8 +2,9 @@ require "column"
 
 describe Column do
   let(:snapshot) {
-    double(:snapshot, item_id: "item-123", last_price: 100,
-           last_bid: 110, sniper_state: double(to_s: "Joining"))
+    double(:snapshot, item: double(identifier: "item-123"),
+           last_price: 100, last_bid: 110,
+           sniper_state: double(to_s: "Joining"))
   }
 
   [Column::ITEM_IDENTIFIER, Column::LAST_PRICE,
@@ -21,7 +22,7 @@ describe Column do
   end
 
   [
-    ["ITEM_IDENTIFIER", "Item", "item_id"],
+    ["ITEM_IDENTIFIER", "Item", "item.identifier"],
     ["LAST_PRICE", "Last price", "last_price"],
     ["LAST_BID", "Last bid", "last_bid"],
     ["SNIPER_STATE", "State", "sniper_state.to_s"],

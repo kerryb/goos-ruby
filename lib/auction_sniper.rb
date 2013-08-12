@@ -3,9 +3,9 @@ require "sniper_snapshot"
 class AuctionSniper
   attr_reader :snapshot
 
-  def initialize item_id, auction
-    @item_id, @auction, = item_id, auction
-    @snapshot = SniperSnapshot.joining item_id
+  def initialize item, auction
+    @item, @auction, = item, auction
+    @snapshot = SniperSnapshot.joining item
   end
 
   def current_price price, increment, price_source

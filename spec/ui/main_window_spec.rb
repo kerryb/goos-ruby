@@ -1,7 +1,6 @@
 require_relative "../../test_support/auction_sniper_driver"
 require "support/roles/portfolio_listener"
 require "ui/main_window"
-require "ui/snipers_table_model"
 require "sniper_portfolio"
 
 describe Ui::MainWindow do
@@ -11,11 +10,11 @@ describe Ui::MainWindow do
     let(:driver) { AuctionSniperDriver.new window }
     let(:listener) { double :listener, join_auction: true }
 
-    it "passes the item ID to  user request listeners" do
+    it "passes the item details to  user request listeners" do
       window.add_user_request_listener listener
 
-      driver.start_bidding_for "item-123", 999999
-      expect(listener).to have_received(:join_auction).with "item-123"
+      driver.start_bidding_for "item-123", 789
+      expect(listener).to have_received(:join_auction).with Item.new("item-123", 789)
     end
   end
 end

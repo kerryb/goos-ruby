@@ -8,9 +8,9 @@ module Xmpp
     JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;"
     BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;"
 
-    def initialize connection, item_id
+    def initialize connection, item
       @auction_event_listeners = Announcer.new
-      @chat = Xmpp::Chat.new connection, auction_id_for(item_id)
+      @chat = Xmpp::Chat.new connection, auction_id_for(item)
       @chat.add_message_listener(
         AuctionMessageTranslator.new connection.jid.stripped.to_s, @auction_event_listeners
       )
@@ -30,8 +30,8 @@ module Xmpp
 
     private
 
-    def auction_id_for item_id
-      "auction-#{item_id}"
+    def auction_id_for item
+      "auction-#{item.identifier}"
     end
 
     def send_message message
