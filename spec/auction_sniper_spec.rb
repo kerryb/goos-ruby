@@ -8,7 +8,7 @@ describe AuctionSniper do
   subject { AuctionSniper.new item, auction }
   let(:auction) { double :auction, join: true, bid: true }
   let(:item_id) { "item-123" }
-  let(:item) { Item.new item_id }
+  let(:item) { Item.new item_id, 1234 }
   let(:price) { 1001 }
   let(:increment) { 25 }
   let(:sniper_listener) { double :sniper_listener }
@@ -30,7 +30,7 @@ describe AuctionSniper do
       end
     end
 
-    context "from another bidder" do
+    context "from another bidder, within the stop price" do
       before { subject.current_price price, increment, :from_other_bidder }
 
       it "bids higher" do
@@ -43,6 +43,22 @@ describe AuctionSniper do
         )
       end
     end
+
+    context "from another bidder, going over the stop price" do
+      let(:price) { 2345 }
+      before { subject.current_price price, increment, :from_other_bidder }
+
+      it "does not bid" do
+        expect(auction).to_not have_received :bid
+      end
+
+      it "reports that it's losing" do
+        expect(sniper_listener).to have_received(:sniper_state_changed).with(
+          SniperSnapshot.new(item_id, price, 0, SniperState::LOSING)
+        )
+      end
+    end
+
   end
 
   it "reports that the sniper has lost when the action closes immediately" do

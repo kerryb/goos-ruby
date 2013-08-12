@@ -35,6 +35,18 @@ describe SniperSnapshot do
     end
   end
 
+  describe "#losing" do
+    subject { SniperSnapshot.new item_id, last_price, last_bid, SniperState::LOSING }
+    let(:last_price) { 100 }
+    let(:last_bid) { 110 }
+
+    it "returns a new snapshot with last price and bid" do
+      expect(subject.losing last_price ).to eq(
+        SniperSnapshot.new(item_id, last_price, last_bid, SniperState::LOSING)
+      )
+    end
+  end
+
   describe "#won" do
     subject { SniperSnapshot.new item_id, last_price, last_bid, SniperState::WINNING }
     let(:last_price) { 100 }

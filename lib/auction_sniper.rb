@@ -10,11 +10,15 @@ class AuctionSniper
 
   def current_price price, increment, price_source
     if price_source == :from_sniper
-      @snapshot = @snapshot.winning(price)
+      @snapshot = @snapshot.winning price
     else
       bid = price + increment
-      @auction.bid bid
-      @snapshot = @snapshot.bidding(price, bid)
+      if @item.allows_bid? bid
+        @auction.bid bid
+        @snapshot = @snapshot.bidding price, bid
+      else
+        @snapshot = @snapshot.losing price
+      end
     end
     notify_change
   end

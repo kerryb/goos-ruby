@@ -13,6 +13,10 @@ SniperSnapshot = Struct.new :item_id, :last_price, :last_bid, :sniper_state do
     self.class.new item_id, new_last_price, new_last_price, SniperState::WINNING
   end
 
+  def losing new_last_price
+    self.class.new item_id, new_last_price, last_bid, SniperState::LOSING
+  end
+
   def closed
     self.class.new item_id, last_price, last_bid, sniper_state.when_auction_closed
   end
