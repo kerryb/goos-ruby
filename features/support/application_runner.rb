@@ -38,6 +38,7 @@ class ApplicationRunner
   end
 
   def losing_auction? auction, last_price, last_bid
+    @auction_states[auction] = AuctionState.new last_price, last_bid
     @driver.wait_for_displayed_sniper_status(auction.item_id,
                                              last_price,
                                              last_bid,
