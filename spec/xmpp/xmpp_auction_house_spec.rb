@@ -13,7 +13,7 @@ describe Xmpp::XmppAuctionHouse do
     sleep 0.01 until EM.reactor_running?
     system "cd vines; vines start -d &>/dev/null"
     server.start_selling_item
-    listener.stub(:auction_closed) { @auction_close_event_received = true }
+    allow(listener).to receive(:auction_closed) { @auction_close_event_received = true }
     auction.add_event_listener listener
     auction.join
   end

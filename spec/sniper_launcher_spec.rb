@@ -8,7 +8,7 @@ describe SniperLauncher do
   let(:item) { Item.new "item-123" }
 
   before do
-    auction_house.stub(:auction_for).with(item) { auction }
+    allow(auction_house).to receive(:auction_for).with(item) { auction }
   end
 
   it "adds a new sniper to the collector then joins the auction" do
