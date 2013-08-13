@@ -33,11 +33,12 @@ task :success do
 end
 
 task :run do
+  system "cd vines; vines start -d"
   Thread.new { EM.run }
   sleep 0.01 until EM.reactor_running?
-  #FIXME this stopped working in 5faebfe
   main = Main.main "sniper@localhost", "sniper"
   until main.ui.destroyed?
     sleep 0.1
   end
+  system "cd vines; vines stop"
 end
