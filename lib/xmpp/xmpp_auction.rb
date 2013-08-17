@@ -10,9 +10,10 @@ module Xmpp
 
     def initialize connection, item
       @auction_event_listeners = Announcer.new
+      translator = translator_for connection
       @chat = Xmpp::Chat.new connection, auction_id_for(item)
       @chat.add_message_listener(
-        AuctionMessageTranslator.new connection.jid.stripped.to_s, @auction_event_listeners
+        translator
       )
     end
 
@@ -29,6 +30,10 @@ module Xmpp
     end
 
     private
+
+    def translator_for connection
+      AuctionMessageTranslator.new connection.jid.stripped.to_s, @auction_event_listeners
+    end
 
     def auction_id_for item
       "auction-#{item.identifier}"
