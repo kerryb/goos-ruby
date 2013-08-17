@@ -4,7 +4,7 @@ describe SniperLauncher do
   subject { SniperLauncher.new auction_house, collector }
   let(:auction_house) { double :auction_house }
   let(:collector) { double :collector, add_sniper: true }
-  let(:auction) { double :auction, add_event_listener: true }
+  let(:auction) { double :auction, add_auction_event_listener: true }
   let(:item) { Item.new "item-123" }
 
   before do
@@ -13,7 +13,7 @@ describe SniperLauncher do
 
   it "adds a new sniper to the collector then joins the auction" do
     auction_state = :not_joined
-    expect(auction).to receive :add_event_listener do |listener|
+    expect(auction).to receive :add_auction_event_listener do |listener|
       expect(auction_state).to eq :not_joined
       expect(listener.snapshot.item_id).to eq "item-123"
     end

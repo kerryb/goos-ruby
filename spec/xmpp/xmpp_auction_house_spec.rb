@@ -14,7 +14,7 @@ describe Xmpp::XmppAuctionHouse do
     system "cd vines; vines start -d &>/dev/null"
     server.start_selling_item
     allow(listener).to receive(:auction_closed) { @auction_close_event_received = true }
-    auction.add_event_listener listener
+    auction.add_auction_event_listener listener
     auction.join
   end
 

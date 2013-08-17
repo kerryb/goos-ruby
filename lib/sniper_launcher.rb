@@ -9,7 +9,7 @@ class SniperLauncher
   def join_auction item
     auction = @auction_house.auction_for item
     sniper = AuctionSniper.new item, auction
-    auction.add_event_listener sniper
+    auction.add_auction_event_listener sniper
     @collector.add_sniper sniper
     auction.join
   end

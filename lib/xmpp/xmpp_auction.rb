@@ -17,7 +17,7 @@ module Xmpp
       )
     end
 
-    def add_event_listener listener
+    def add_auction_event_listener listener
       @auction_event_listeners.add_listener listener
     end
 
