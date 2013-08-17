@@ -36,3 +36,14 @@ Feature: End-to-end test
     And other bidders push the auction over my stop price
     And the auction closes
     Then I should have lost the auction
+
+  @wip
+  Scenario: Abandon and report failure after invalid auction message
+    Given auctions of two items are in progress
+    When I bid in both auctions
+    And I receive an invalid event from one auction
+    Then that auction should be shown as failed
+    When I receive further events from both auctions
+    Then I should bid on the second item as normal
+    And the message from the failed auction should be logged
+    And the first auction should still be shown as failed
