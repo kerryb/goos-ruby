@@ -49,6 +49,14 @@ Then "I should win both items" do
   expect(sniper).to have_won_auction auction_2
 end
 
-Then "that auction should be shown as failed" do
+Then %r{(?:that auction should|the first auction should still) be shown as failed} do
   expect(sniper).to have_marked_auction_as_failed auction_1
+end
+
+Then "I should bid on the second item as normal" do
+  expect(sniper).to be_bidding auction_2, 500, 521
+end
+
+Then "the message from the failed auction should be logged" do
+  pending
 end

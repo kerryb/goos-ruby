@@ -33,3 +33,8 @@ end
 When "I receive an invalid event from one auction" do
   auction_1.send_invalid_message_containing "a broken message"
 end
+
+When "I receive further events from both auctions" do
+  auction_1.report_price 1000, 98, "other bidder"
+  auction_2.report_price 500, 21, "other bidder"
+end
