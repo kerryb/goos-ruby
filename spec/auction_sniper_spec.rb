@@ -97,4 +97,12 @@ describe AuctionSniper do
       SniperSnapshot.new(item_id, price, price, SniperState::WON)
     )
   end
+
+  it "reports aution failure" do
+    allow(sniper_listener).to receive :sniper_state_changed
+    subject.auction_failed
+    expect(sniper_listener).to have_received(:sniper_state_changed).with(
+      SniperSnapshot.new(item_id, 0, 0, SniperState::FAILED)
+    )
+  end
 end

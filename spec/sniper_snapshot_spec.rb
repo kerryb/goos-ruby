@@ -17,7 +17,7 @@ describe SniperSnapshot do
     let(:last_bid) { 110 }
 
     it "returns a new snapshot with last price and bid" do
-      expect(subject.bidding last_price, last_bid ).to eq(
+      expect(subject.bidding last_price, last_bid).to eq(
         SniperSnapshot.new(item_id, last_price, last_bid, SniperState::BIDDING)
       )
     end
@@ -29,7 +29,7 @@ describe SniperSnapshot do
     let(:last_bid) { 110 }
 
     it "returns a new snapshot with last price and bid" do
-      expect(subject.winning last_bid ).to eq(
+      expect(subject.winning last_bid).to eq(
         SniperSnapshot.new(item_id, last_bid, last_bid, SniperState::WINNING)
       )
     end
@@ -41,7 +41,7 @@ describe SniperSnapshot do
     let(:last_bid) { 110 }
 
     it "returns a new snapshot with last price and bid" do
-      expect(subject.losing last_price ).to eq(
+      expect(subject.losing last_price).to eq(
         SniperSnapshot.new(item_id, last_price, last_bid, SniperState::LOSING)
       )
     end
@@ -53,7 +53,7 @@ describe SniperSnapshot do
     let(:last_bid) { 110 }
 
     it "returns a new snapshot with last price and bid" do
-      expect(subject.winning last_bid ).to eq(
+      expect(subject.winning last_bid).to eq(
         SniperSnapshot.new(item_id, last_bid, last_bid, SniperState::WINNING)
       )
     end
@@ -81,6 +81,16 @@ describe SniperSnapshot do
           SniperSnapshot.new(item_id, last_price, last_bid, SniperState::LOST)
         )
       end
+    end
+  end
+
+  describe "#failed" do
+    subject { SniperSnapshot.new item_id, 123, 456, SniperState::JOINING }
+
+    it "returns a new 'failed' snapshot with values zeroed out" do
+      expect(subject.failed).to eq(
+        SniperSnapshot.new(item_id, 0, 0, SniperState::FAILED)
+      )
     end
   end
 
