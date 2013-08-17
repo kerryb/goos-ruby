@@ -12,6 +12,8 @@ module Xmpp
       when "CLOSE"
         @listener.auction_closed
       end
+    rescue
+      @listener.auction_failed
     end
 
     class AuctionEvent

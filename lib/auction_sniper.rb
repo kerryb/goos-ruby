@@ -32,6 +32,10 @@ class AuctionSniper
     notify_change
   end
 
+  def auction_failed
+    raise "TODO"
+  end
+
   private
 
   def notify_change

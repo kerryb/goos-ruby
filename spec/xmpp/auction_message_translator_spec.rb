@@ -28,4 +28,11 @@ describe Xmpp::AuctionMessageTranslator do
     subject.handle_message message
     expect(auction_event_listener).to have_received :auction_closed
   end
+
+  it "notifies that the auction has failed when it receives an invalid message" do
+    allow(auction_event_listener).to receive :auction_failed
+    message = double :message, body: "a bad message"
+    subject.handle_message message
+    expect(auction_event_listener).to have_received :auction_failed
+  end
 end
