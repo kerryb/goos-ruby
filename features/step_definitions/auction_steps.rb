@@ -29,3 +29,7 @@ end
 When "the auction closes" do
   auction.close
 end
+
+When "I receive an invalid event from one auction" do
+  auction_1.send_invalid_message_containing "a broken message"
+end

@@ -58,4 +58,9 @@ class ApplicationRunner
                                              @auction_states[auction].last_bid,
                                              SniperState::WON.to_s)
   end
+
+  def has_marked_auction_as_failed? auction
+    @driver.wait_for_displayed_sniper_status(auction.item_id, 0, 0,
+                                             SniperState::FAILED.to_s)
+  end
 end

@@ -9,6 +9,7 @@ class SniperState
   LOSING = new "Losing", false, :LOST
   LOST = new "Lost", false
   WON = new "Won", true
+  FAILED = new "Failed", false
 
   def to_s
     name

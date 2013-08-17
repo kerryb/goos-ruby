@@ -7,6 +7,7 @@ require "sniper_state"
   SniperState::WINNING => [true, "Winning"],
   SniperState::LOST => [false, "Lost"],
   SniperState::WON => [true, "Won"],
+  SniperState::FAILED => [false, "Failed"],
 }.each do |state, (winning, label)|
   describe state.name do
     specify "is #{winning ? '' : 'not '} winning" do
@@ -35,6 +36,7 @@ end
 [
   SniperState::LOST,
   SniperState::WON,
+  SniperState::FAILED,
 ].each do |state|
   describe state.name do
     specify "does not have a next state" do

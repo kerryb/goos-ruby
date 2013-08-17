@@ -48,3 +48,7 @@ Then "I should win both items" do
   expect(sniper).to have_won_auction auction_1
   expect(sniper).to have_won_auction auction_2
 end
+
+Then "that auction should be shown as failed" do
+  expect(sniper).to have_marked_auction_as_failed auction_1
+end

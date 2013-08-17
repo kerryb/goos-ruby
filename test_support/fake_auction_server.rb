@@ -26,6 +26,10 @@ class FakeAuctionServer
     send_message CLOSE_EVENT_FORMAT
   end
 
+  def send_invalid_message_containing message
+    send_message message
+  end
+
   def wait_for_join_request_from_sniper sniper_id
     Timeout.timeout 5 do
       sleep 0.01 until has_received_message?(Xmpp::XmppAuction::JOIN_COMMAND_FORMAT, sniper_id)
