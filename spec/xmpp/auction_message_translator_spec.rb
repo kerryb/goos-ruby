@@ -35,4 +35,36 @@ describe Xmpp::AuctionMessageTranslator do
     subject.handle_message message
     expect(auction_event_listener).to have_received :auction_failed
   end
+
+  it "notifies that the auction has failed when the event type is missing" do
+    allow(auction_event_listener).to receive :auction_failed
+    message = double :message,
+      body: "SOLVersion: 1.1; CurrentPrice: 192; Increment: 7; Bidder: #{sniper_id};"
+    subject.handle_message message
+    expect(auction_event_listener).to have_received :auction_failed
+  end
+
+  it "notifies that the auction has failed when the current price is missing" do
+    allow(auction_event_listener).to receive :auction_failed
+    message = double :message,
+      body: "SOLVersion: 1.1; Event: PRICE; Increment: 7; Bidder: #{sniper_id};"
+    subject.handle_message message
+    expect(auction_event_listener).to have_received :auction_failed
+  end
+
+  it "notifies that the auction has failed when the increment is missing" do
+    allow(auction_event_listener).to receive :auction_failed
+    message = double :message,
+      body: "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Bidder: #{sniper_id};"
+    subject.handle_message message
+    expect(auction_event_listener).to have_received :auction_failed
+  end
+
+  it "notifies that the auction has failed when the bidder is missing" do
+    allow(auction_event_listener).to receive :auction_failed
+    message = double :message,
+      body: "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7;"
+    subject.handle_message message
+    expect(auction_event_listener).to have_received :auction_failed
+  end
 end
