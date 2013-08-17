@@ -1,4 +1,5 @@
 require "xmpp/xmpp_auction_house"
+require "item"
 require_relative "../../test_support/fake_auction_server"
 
 describe Xmpp::XmppAuctionHouse do

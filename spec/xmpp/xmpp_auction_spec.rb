@@ -1,4 +1,5 @@
 require "xmpp/xmpp_auction"
+require "item"
 require "support/roles/auction"
 
 describe Xmpp::XmppAuction do
