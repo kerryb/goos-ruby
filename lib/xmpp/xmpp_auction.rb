@@ -12,9 +12,7 @@ module Xmpp
       @auction_event_listeners = Announcer.new
       translator = translator_for connection
       @chat = Xmpp::Chat.new connection, auction_id_for(item)
-      @chat.add_message_listener(
-        translator
-      )
+      @chat.add_message_listener translator
     end
 
     def add_auction_event_listener listener
