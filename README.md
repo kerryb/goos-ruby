@@ -73,11 +73,6 @@ interfaces](https://github.com/kerryb/goos-ruby/tree/master/spec/support/roles),
 which simply check that anything acting as that role implements the correct
 methods.
 
-One exception (for now, at least) is UserRequestListener from chapter 16.
-That's currently just implemented by having Main#add_user_request_listener_for
-take a block which is registered as the listener, and only handles join
-requests.
-
 ### AuctionMessageTranslator
 
 Unlike Smack, Blather works at the individual message level, rather than
