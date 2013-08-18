@@ -13,6 +13,7 @@ module Xmpp
       translator = translator_for connection
       @chat = Xmpp::Chat.new connection, auction_id_for(item)
       @chat.add_message_listener translator
+      add_auction_event_listener chat_disconector_for(translator)
     end
 
     def add_auction_event_listener listener
@@ -33,12 +34,29 @@ module Xmpp
       AuctionMessageTranslator.new connection.jid.stripped.to_s, @auction_event_listeners
     end
 
+    def chat_disconector_for translator
+      ChatDisconnector.new @chat, translator
+    end
+
     def auction_id_for item
       "auction-#{item.identifier}"
     end
 
     def send_message message
       @chat.send_message message
+    end
+
+    class ChatDisconnector
+      def initialize chat, translator
+        @chat, @translator = chat, translator
+      end
+
+      def auction_failed
+        @chat.remove_message_listener @translator
+      end
+
+      def auction_closed; end
+      def current_price *; end
     end
   end
 end
