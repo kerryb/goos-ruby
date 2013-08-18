@@ -58,5 +58,5 @@ Then "I should bid on the second item as normal" do
 end
 
 Then "the message from the failed auction should be logged" do
-  pending
+  expect(sniper).to have_logged_invalid_message "a broken message"
 end

@@ -5,3 +5,4 @@ pid
 bin
 tmp
 coverage
+sniper.log

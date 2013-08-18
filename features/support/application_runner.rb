@@ -7,6 +7,8 @@ class ApplicationRunner
 
   def start_bidding_in auctions_with_stop_prices
     auctions = auctions_with_stop_prices.keys
+    @log_driver = AuctionLogDriver.new
+    @log_driver.clear_log
     @auction_states = Hash[*(auctions.flat_map {|a| [a, AuctionState.new(0, 0)] })]
     @application = Main.main SNIPER_ID, SNIPER_PASSWORD
     @driver = AuctionSniperDriver.new @application.ui
@@ -62,5 +64,9 @@ class ApplicationRunner
   def has_marked_auction_as_failed? auction
     @driver.wait_for_displayed_sniper_status(auction.item_id, 0, 0,
                                              SniperState::FAILED.to_s)
+  end
+
+  def has_logged_invalid_message? message
+    @log_driver.has_log_entry_containing_string? message
   end
 end
