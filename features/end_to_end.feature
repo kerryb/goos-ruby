@@ -37,7 +37,6 @@ Feature: End-to-end test
     And the auction closes
     Then I should have lost the auction
 
-  @wip
   Scenario: Abandon and report failure after invalid auction message
     Given auctions of two items are in progress
     When I bid in both auctions

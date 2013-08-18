@@ -1,7 +1,7 @@
 module Xmpp
   class AuctionMessageTranslator
-    def initialize sniper_id, listener
-      @sniper_id, @listener = sniper_id, listener
+    def initialize sniper_id, listener, failure_reporter
+      @sniper_id, @listener, @failure_reporter = sniper_id, listener, failure_reporter
     end
 
     def handle_message message
@@ -12,7 +12,8 @@ module Xmpp
       when "CLOSE"
         @listener.auction_closed
       end
-    rescue
+    rescue => e
+      @failure_reporter.cannot_translate_message @sniper_id, message.body, e
       @listener.auction_failed
     end
 
