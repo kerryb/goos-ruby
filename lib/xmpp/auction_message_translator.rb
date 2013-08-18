@@ -18,6 +18,9 @@ module Xmpp
     end
 
     class AuctionEvent
+      class MissingValueException < RuntimeError; end
+      class BadlyFormedMessageException < RuntimeError; end
+
       def initialize fields
         @fields = fields
       end
@@ -27,19 +30,19 @@ module Xmpp
       end
 
       def type
-        @fields.fetch "Event"
+        field "Event"
       end
 
       def current_price
-        Integer(@fields.fetch "CurrentPrice")
+        Integer(field "CurrentPrice")
       end
 
       def increment
-        Integer(@fields.fetch "Increment")
+        Integer(field "Increment")
       end
 
       def is_from? sniper_id
-        @fields.fetch("Bidder") == sniper_id ? :from_sniper : :from_other_bidder
+        field("Bidder") == sniper_id ? :from_sniper : :from_other_bidder
       end
 
       private
@@ -48,8 +51,14 @@ module Xmpp
         fields = body.split ";"
         name_value_pairs = fields.flat_map {|a| a.split ":" }.map(&:strip)
         Hash[*name_value_pairs]
+      rescue
+        raise BadlyFormedMessageException.new body
       end
       private_class_method :fields_in
+
+      def field key
+        @fields.fetch(key) { raise MissingValueException.new(key) }
+      end
     end
   end
 end
