@@ -40,7 +40,7 @@ either of them to work properly, so ended up with
 [EventMachine](http://rubyeventmachine.com/) so has to be started in its own
 thread to avoid blocking the rest of the application.
 
-### GUI
+### GUI
 
 I considered using Swing to keep close to the book, but that would have
 restricted the app to only running on JRuby. I tried Tk and Qt, but couldn't
@@ -73,7 +73,7 @@ interfaces](https://github.com/kerryb/goos-ruby/tree/master/spec/support/roles),
 which simply check that anything acting as that role implements the correct
 methods.
 
-### AuctionMessageTranslator
+### AuctionMessageTranslator
 
 Unlike Smack, Blather works at the individual message level, rather than
 modelling persistent chats. To ensure messages only get sent to the appropriate
